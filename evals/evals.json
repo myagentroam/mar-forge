@@ -1,0 +1,38 @@
+{
+  "skill_name": "mar-forge",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "ship forge: a confirmed empty-export bug has a reproducible unit test and the user authorizes complete local delivery. Take it from intake through integration, but do not push.",
+      "expected_output": "Loads protocol, admission, and delivery; requires Curator acceptance and independent Gatekeeper approval before ready; drives Coordinator, Fixer, and Verifier through local commits and integration without pushing or adding another approval role.",
+      "files": [],
+      "expectations": [
+        "Requires Curator acceptance and Gatekeeper approval before Coordinator claims the item.",
+        "Assigns implementation to Fixer and independent candidate review to Verifier.",
+        "Ends at local integration of all changed repositories without push, deployment, release, or external reply."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Review commit 9f31c2a and its direct effects. This is read-only: check the implementation, tests, and design, and make it possible to resume after an interruption.",
+      "expected_output": "Loads protocol and inspector, binds the exact candidate, uses the fixed commit checkpoint and a per-round report, separates confirmed findings from speculation, and does not automatically fix or create a Work Item.",
+      "files": [],
+      "expectations": [
+        "Binds the review to the exact commit and its real parent or base.",
+        "Uses test/runs/code-review/commit.md and a per-round report for recovery.",
+        "Separates confirmed findings from unconfirmed candidates and does not automatically fix or transfer them."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "An external user says the workspace occasionally freezes when switching tabs, but there are no logs or reproduction steps yet. Transfer this through the normal admission flow.",
+      "expected_output": "Uses Curator reception and Gatekeeper fact check, preserves the external source and uncertainty, seeks the smallest decisive evidence, and does not mark a confirmed Bug ready or dispatch implementation prematurely.",
+      "files": [],
+      "expectations": [
+        "Returns needs evidence rather than approved or ready.",
+        "Requests a bounded reproduction or timestamped sanitized diagnostic evidence.",
+        "Does not dispatch implementation or claim a confirmed root cause."
+      ]
+    }
+  ]
+}
