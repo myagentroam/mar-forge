@@ -64,6 +64,12 @@ Only the Coordinator scans and restores the Handoff queue. Workers finish their 
 
 Unless the host declares an equivalent, a role that requires private local recovery state uses an ignored `.forge/<role>/` directory with its existing lowercase role name. Nest Work Item or run identities below the role to isolate concurrent work; do not create empty role directories by convention. These files support recovery only: do not mirror canonical Work Item state or create a second queue, tracker, or completion proof.
 
+## Role Sessions and scheduled triggers
+
+A fixed role Session's persistent prompt binds it to the full role and the relevant references; it does not replace those rules. A scheduled trigger defines only a recurring subset and cadence, not a smaller role or new authorization. Create schedules only for actual recurring work, reuse the existing role Session, and do not infer that every role needs one.
+
+Scheduled and manually requested sequential invocations of the same mode share its checkpoint. An independent ad hoc task uses a separate scope and checkpoint, so routine runs cannot consume or reset its progress. Preserve these boundaries when updating prompts or schedules; scheduled execution and manual execution follow their existing authorization rules.
+
 ## Brief and evidence
 
 A Brief states the problem or goal, expected behavior, useful analysis, and completion/verification conditions in the smallest sufficient form. Simple items may be one paragraph. Record only facts and constraints that change implementation or acceptance.

@@ -79,7 +79,7 @@ MAR is the target runtime for this Skill; standalone non-MAR runtimes are unsupp
 | ------------ | ------------------------------------------------------------------------ |
 | Eligibility  | Natural-language declaration of Forge use in root instructions           |
 | Work Items   | Tracker, commands, state mapping, and Brief revision source              |
-| Sessions     | Role identities, Runner models/effort, and queue/control semantics       |
+| Sessions     | Role identities, persistent prompts, schedules, models, and controls     |
 | Repositories | Remotes, branches, dependency order, and pointer/content relationships   |
 | Execution    | Workspace isolation, commit mechanism, and authorized delivery point     |
 | Engineering  | Source routing, authoritative design, verification, and cleanup rules    |

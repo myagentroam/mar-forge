@@ -243,6 +243,18 @@
         "Does not disclose private analysis in an external reply or treat internal rejection as external authorization."
       ],
       "files": []
+    },
+    {
+      "id": 22,
+      "prompt": "A host binds a fixed Inspector Session with a daily continuous-review schedule and a fixed Coordinator Session with an hourly ready/in-progress sweep. The user also manually asks Inspector to continue the cursor and later requests an unrelated module exploration. Configure the role prompts and trigger scopes.",
+      "expected_output": "Persistent prompts bind the full roles, schedules cover only recurring subsets, scheduled and manual continuous reviews share the commit checkpoint, and the unrelated exploration uses a separate topic checkpoint.",
+      "expectations": [
+        "Does not treat either schedule as the role's full capability or create duplicate role Sessions.",
+        "Inspector's scheduled and manually requested sequential reviews reuse commit.md, while ad hoc exploration keeps independent scope and topic.md.",
+        "Coordinator's recurring sweep covers admitted ready/in-progress work without assuming Curator/Gatekeeper admission or Inspector review duties.",
+        "Does not expand authorization or mirror canonical Work Item state into schedule or prompt records."
+      ],
+      "files": []
     }
   ]
 }
