@@ -260,12 +260,13 @@
     },
     {
       "id": 23,
-      "prompt": "During a scheduled continuous commit review, Inspector confirms Finding F1. Later, the user manually asks Inspector to advance the same cursor; that review confirms F2. Neither trigger says 'ship forge'. A third continuous review finds only a hypothesis. Describe the handoffs and recovery records.",
-      "expected_output": "Both continuous-review triggers automatically send confirmed Findings to Curator for ordinary Handoff with evidence and stable IDs. Inspector records pending/queued receipts without duplicating sends and leaves admission and implementation to other roles. The hypothesis is not transferred.",
+      "prompt": "During a scheduled continuous commit review, Inspector confirms Finding F1. Its send to idle Curator returns delivery=STARTED with the actual clientMessageId and runId. Later, the user manually asks Inspector to advance the same cursor; that review confirms F2, whose send to busy Curator returns delivery=QUEUED with the actual clientMessageId and queueItemId. Neither trigger says 'ship forge'. A third continuous review finds only a hypothesis. Describe the handoffs and recovery records, including a later resume before Curator finishes processing either Finding.",
+      "expected_output": "Both continuous-review triggers automatically send confirmed Findings to Curator for ordinary Handoff with evidence and stable IDs. Inspector records pending before sending and then the actual STARTED or QUEUED delivery receipt, without duplicating either send on resume. Transport acceptance is not Curator acceptance or implementation completion; admission and implementation remain with their respective roles. The hypothesis is not transferred.",
       "expectations": [
         "Scheduled and manually advanced continuous reviews have the same automatic Curator handoff behavior without requiring a separate ship forge instruction for each Finding.",
         "Each handoff includes the report reference, repository and base/HEAD, stable Finding ID, and actionable evidence; Curator still performs reception, deduplication, and normal Gatekeeper admission.",
-        "Inspector records pending before sending, replaces it only with the actual queued receipt, reconciles unknown results before new units, and never resends an already queued Finding.",
+        "Inspector records pending with the stable Finding ID and clientMessageId before sending, then saves F1's actual STARTED receipt and F2's actual QUEUED receipt as accepted deliveries, preserving their returned correlation fields without inventing receipts.",
+        "On resume, Inspector resends neither F1 nor F2; STARTED need not become QUEUED, and transport acceptance is not Curator acceptance, readiness, or implementation completion.",
         "Inspector does not directly create or edit Work Items, mark ready, dispatch Workers, fix Findings, or wait for implementation before advancing a completed review cursor.",
         "The unconfirmed hypothesis remains local and no Finding-free review creates a Handoff."
       ],
@@ -280,6 +281,19 @@
         "The initial Fixer Run implements, performs an initial review/fix loop and required verification but does not commit; the queued follow-up performs another review/fix loop, affected reruns, and every required task commit.",
         "Coordinator verifies actual follow-up execution, final commits, and directory release before Verifier dispatch rather than treating queue acceptance or the first Run's terminal state as candidate completion.",
         "The message is sent only once for the initial dispatch and is not repeated for subsequent Verifier-requested repairs."
+      ],
+      "files": []
+    },
+    {
+      "id": 25,
+      "prompt": "Inspector resumes a continuous-review checkpoint after interrupted sends. Review conclusions and the completed cursor are already recorded. Handoffs for confirmed Findings F3, F4, and F5 remain pending with their original clientMessageIds because send results were unknown. For F3, the recipient's received-input history matches its clientMessageId and proves accepted delivery that started processing. For F4, the recipient's queue record matches its clientMessageId and proves accepted queued delivery. For F5, available records do not establish its outcome; a different clientMessageId belongs to an unrelated input. Curator has not yet accepted these Findings into Work Items. Describe reconciliation, deduplication, and the next review action without sending live messages.",
+      "expected_output": "Reconciles pending sends by their saved clientMessageIds, replaces F3 and F4 pending entries with the actual accepted-delivery evidence, and never resends either Finding. F5 stays pending because its outcome is unknown; the unrelated input is not a receipt. Retains the completed cursor but reconciles pending delivery before selecting a new unit, without waiting for Curator acceptance or implementation or taking over admission.",
+      "expectations": [
+        "Unknown send outcomes remain pending until actual recipient received-input or queue records correlated by the saved clientMessageId establish the outcome; neither a timeout nor a missing record alone authorizes a blind resend.",
+        "Uses F3's matching received-input evidence for accepted STARTED delivery and F4's matching queue evidence for accepted QUEUED delivery, saving actual evidence rather than inventing a send receipt or requiring a second delivery state.",
+        "Does not resend F3 or F4, including when the local checkpoint still said pending before reconciliation; an existing accepted or queued record likewise prevents duplicate sends.",
+        "Keeps F5 pending, rejects the unrelated clientMessageId as delivery evidence, and reconciles the unresolved handoff before selecting a new review unit without rolling back the completed cursor or repeating the completed review.",
+        "Does not equate accepted input with Curator acceptance, Gatekeeper approval, ready, or implementation completion; Inspector neither mutates Work Items nor dispatches Workers, fixes Findings, or waits for downstream completion."
       ],
       "files": []
     }
