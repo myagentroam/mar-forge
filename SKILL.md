@@ -17,33 +17,20 @@ Otherwise, stop using this Skill and do not load its references. Do not apply Fo
 
 **Forge autonomy through automation, minimizing human attention while preserving human judgment.**
 
-MAR Forge is a reusable workflow Skill for MAR-managed Workspaces. It defines engineering judgment and role boundaries, not product requirements, repository commands, or new permissions. MAR is the target runtime; MAR-hosted Runners follow MAR Session semantics. Standalone non-MAR runtimes are unsupported.
+For MAR-managed Workspaces, Forge defines workflow judgment and role boundaries—not product requirements, repository commands, or new permissions. MAR-hosted Runners follow MAR Session semantics; standalone non-MAR runtimes are unsupported.
 
 ## Hard invariants
 
-- Forge is opt-in; Skill availability or accidental loading does not enable Forge for a repository or task.
-- Forge governs autonomous Handoff only; explicitly assigned current-Session work remains outside that protocol.
 - Handoff ready means Curator accepted **and** Gatekeeper approved.
-- Only Coordinator claims and orchestrates Handoff work.
-- Workers never mutate Work Item state or coordinate with each other.
+- Only Coordinator claims and orchestrates Handoff; Workers never mutate Work Item state or coordinate with each other.
 - Verifier PASS is bound to an exact candidate and evidence.
 - Forge never expands user authorization; push, deploy, release, and external replies require explicit authorization.
 
 ## Scope
 
-Forge governs autonomous Handoff delivery. Explicit work assigned to the current Session remains Continue under the host repository's normal development rules and outside Forge Handoff; do not apply admission or role delegation merely for symmetry.
+Forge governs autonomous Handoff only. Explicit current-Session work remains Continue under host development rules and outside Forge; do not apply admission or delegation for symmetry.
 
-Handoff transfers work into the autonomous shared queue. Curator acceptance and Gatekeeper approval are mandatory before an unowned item becomes ready.
-
-The admitted Handoff role chain is `Curator -> Gatekeeper -> Coordinator -> Fixer -> Verifier`, followed by authorized integration. Inspector and other sources feed Curator; Inspector is not a mandatory entry. Coordinator mediates every Fixer/Verifier loop.
-
-### Roles
-
-- **Inspector** investigates code, architecture, modules, commits, or a defined verification question. It reports evidence and does not automatically fix or transfer findings.
-- **Curator** is Forge's intake role. It owns reception, deduplication, clarification, and the Work Item Brief. It does not implement or dispatch Workers.
-- **Gatekeeper** independently checks technical evidence and readiness after Curator acceptance, records its decision, and performs the final ready transition after approval. It does not rewrite the Brief, rediscover the item, or replace Curator.
-- **Coordinator** is the sole Handoff orchestrator. It claims admitted work, coordinates Fixer/Verifier loops, writes back meaningful outcomes, and performs authorized integration.
-- **Fixer** implements and tests one coherent unit of work. **Verifier** independently reviews the candidate and its evidence. Workers do not modify Work Item state or message each other.
+The admitted chain is `Curator -> Gatekeeper -> Coordinator -> Fixer -> Verifier`, then authorized integration. Inspector and other sources feed Curator but are not mandatory; Coordinator mediates every Fixer/Verifier loop.
 
 ## Load only the relevant rules
 
@@ -52,14 +39,10 @@ The admitted Handoff role chain is `Curator -> Gatekeeper -> Coordinator -> Fixe
 - **Coordinator / `ship forge`:** read [protocol.md](references/protocol.md) and [delivery.md](references/delivery.md); add [admission.md](references/admission.md) only for admission coordination or recovery, not to assume Curator/Gatekeeper roles.
 - **Templates:** use [templates.md](references/templates.md) only when a Brief, evidence report, admission decision, Worker dispatch, or decision record is needed. Templates are aids, not mandatory empty sections.
 
-Repository instructions supply native Work Item commands, role Session identities, repository and branch mappings, model/effort settings, engineering rules, notification recipients, ignored evidence paths, and the exact authorized delivery point. Follow those bindings without copying them into this public Skill.
+Host instructions bind Work Items, Sessions, repositories, models, engineering rules, notifications, evidence paths, and the delivery point. Follow these bindings without copying them into this Skill.
 
 ## Working principles
 
 - Start from current source, tests, authoritative design, actual state, and the user's current instruction. Do not treat an old plan, prior receipt, or role title as proof.
-- Strict admission enables bold autonomy: every admitted Handoff item is driven through to verified delivery.
-- Reuse existing authorized Sessions and records. Do not create a second role instance, a local task database, or parallel SOPs.
-- Preserve user work and existing ownership. Queue ordinary handoffs; reconcile uncertain side effects before retrying them.
-- Drive admitted work through implementation, focused verification, independent Verifier review, fix loops, and the authorized delivery point. Do not stop at scheduling or a candidate commit.
-- Keep Work Items useful: Brief, meaningful admission/status transitions, decisions, and final outcomes. Keep process chatter, raw logs, and internal Session details in ignored evidence.
-- Push, deployment, release, production changes, and external replies require their own current authorization. `ship forge` defaults to complete authorized local delivery, including task commits and local integration, not remote publication.
+- Reuse authorized Sessions and records; preserve user work and ownership, and reconcile uncertain side effects before retrying. Do not create parallel role instances, task databases, or SOPs.
+- Drive admitted work to verified authorized delivery, not merely scheduling or a candidate commit. Keep Work Items to Briefs, meaningful transitions, decisions, and outcomes; retain process chatter and raw evidence outside user-facing records.

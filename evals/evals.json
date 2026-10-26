@@ -20,7 +20,7 @@
       "expectations": [
         "Loads inspector without requiring protocol for a review with no transfer, ownership, or Handoff recovery.",
         "Binds the review to the exact commit and its real parent or base.",
-        "Uses test/runs/code-review/commit.md and a per-round report for recovery.",
+        "Uses .forge/inspector/commit.md and a per-round report for recovery.",
         "Separates confirmed findings from unconfirmed candidates and does not automatically fix or transfer them.",
         "Starts with static code, design, and existing test evidence; runs a focused diagnostic only for a concrete candidate when static evidence is insufficient and the result can change its classification."
       ]
@@ -88,7 +88,8 @@
       "expectations": [
         "Does not mark ready or claim the item.",
         "Records the precise options, impact, recommendation, and recovery point.",
-        "Gatekeeper does not make the product decision or substitute technical approval for human judgment."
+        "Gatekeeper does not make the product decision or substitute technical approval for human judgment.",
+        "Does not delay a human-owned choice by requiring implementation repair attempts."
       ],
       "files": []
     },
@@ -99,7 +100,8 @@
       "expectations": [
         "Reuses the valid Claim, candidate, and candidate-bound PASS.",
         "Does not restart implementation, create replacement Workers, or repeat unaffected verification.",
-        "Verifies actual artifacts and resumes only the unfinished writeback and integration stages."
+        "Verifies actual artifacts and resumes only the unfinished writeback and integration stages.",
+        "Uses the host-declared role-based .forge recovery layout without treating it as a second queue."
       ],
       "files": []
     },

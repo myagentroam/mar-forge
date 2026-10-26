@@ -14,11 +14,13 @@ Before calling code over-designed or over-defensive, prove that its guarded case
 
 Use the host's ignored evidence root. Unless it declares an equivalent, use:
 
-| Path                                      | Purpose                                                                     |
-| ----------------------------------------- | --------------------------------------------------------------------------- |
-| `test/runs/code-review/commit.md`         | Continuous commit cursor, current target, and next action for this checkout |
-| `test/runs/code-review/topic.md`          | One ad hoc review's scope, coverage, and next action                        |
-| `test/runs/code-review/runs/<review-id>/` | Per-round reports, command logs, diagnostics, and sanitized evidence        |
+| Path                                 | Purpose                                                                     |
+| ------------------------------------ | --------------------------------------------------------------------------- |
+| `.forge/inspector/commit.md`         | Continuous commit cursor, current target, and next action for this checkout |
+| `.forge/inspector/topic.md`          | One ad hoc review's scope, coverage, and next action                        |
+| `.forge/inspector/runs/<review-id>/` | Per-round reports, command logs, diagnostics, and sanitized evidence        |
+
+New reviews use this layout. Finish an already-active legacy review in its recorded location; do not move or duplicate its checkpoint while active.
 
 Use a distinguishable review ID such as `20261025T103000Z-eb06ac33` or `20261025T103000Z-agent-core`. Fixed files are current snapshots, not append-only logs; detailed evidence belongs in the run directory.
 
@@ -37,7 +39,7 @@ mode: commit | topic
 workspace: <absolute path>
 owner_session: <current or interrupted Session ID>
 authorization: <actual scope for this review>
-run_dir: test/runs/code-review/runs/<review-id>/
+run_dir: .forge/inspector/runs/<review-id>/
 
 # Commit mode: branch, cursor, pending, base, head.
 

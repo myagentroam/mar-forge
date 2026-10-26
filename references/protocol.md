@@ -60,6 +60,10 @@ Claims and tracker updates are not atomic distributed locks. Reconcile partial u
 
 Only the Coordinator scans and restores the Handoff queue. Workers finish their current result and stop; they do not wait for or wake one another.
 
+## Local recovery layout
+
+Unless the host declares an equivalent, keep private Forge checkpoints and evidence in an ignored `.forge/<role>/` directory. Use the role names `inspector`, `curator`, `gatekeeper`, `coordinator`, `fixer`, and `verifier`; nest Work Item or run identities below the role to isolate concurrent work. These files support recovery only and are not a second queue, tracker, or completion proof.
+
 ## Brief and evidence
 
 A Brief states the problem or goal, expected behavior, useful analysis, and completion/verification conditions in the smallest sufficient form. Simple items may be one paragraph. Record only facts and constraints that change implementation or acceptance.
@@ -74,7 +78,7 @@ A **Brief revision** is a native item revision, reliable update sequence, or exp
 
 ## Human attention and notifications
 
-First exhaust bounded repair, internal coordination, and recovery within existing authorization. Use needs-decision as the single human-attention state when a person must choose behavior, scope, architecture, resources, permission, or residual risk, or when a technical, environment, or verification blocker persists after those autonomous attempts. Do not escalate the first recoverable failure or create a parallel blocked/needs-attention state.
+For technical, environment, and verification blockers, first exhaust bounded repair, internal coordination, and recovery within existing authorization. Use needs-decision as the single human-attention state when a person must choose behavior, scope, architecture, resources, permission, or residual risk, or when one of those blockers persists after autonomous attempts. Do not delay a human-owned choice for repair attempts, escalate the first recoverable failure, or create a parallel blocked/needs-attention state.
 
 Record the precise question, impact, feasible options, recommendation, owner, and recovery point before using the host-authorized notification channel. The Curator handles an unowned item; the current owner handles a claimed item. Deduplicate by item and substantive decision version. Notification acceptance is neither delivery nor approval.
 
