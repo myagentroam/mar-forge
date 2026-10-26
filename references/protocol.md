@@ -70,6 +70,8 @@ A fixed role Session's persistent prompt binds it to the full role and the relev
 
 Scheduled and manually requested sequential invocations of the same mode share its checkpoint. An independent ad hoc task uses a separate scope and checkpoint, so routine runs cannot consume or reset its progress. Preserve these boundaries when updating prompts or schedules; scheduled execution and manual execution follow their existing authorization rules.
 
+Use automatic context compaction only when the Runtime offers it for the current input and sustained new work follows a largely complete phase whose details have low continuation value. Do not infer eligibility from a schedule or probe for compaction without that offer.
+
 ## Brief and evidence
 
 A Brief states the problem or goal, expected behavior, useful analysis, and completion/verification conditions in the smallest sufficient form. Simple items may be one paragraph. Record only facts and constraints that change implementation or acceptance.

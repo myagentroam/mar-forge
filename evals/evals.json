@@ -252,6 +252,7 @@
         "Does not treat either schedule as the role's full capability or create duplicate role Sessions.",
         "Inspector's scheduled and manually requested sequential reviews reuse commit.md, while ad hoc exploration keeps independent scope and topic.md.",
         "Coordinator's recurring sweep covers admitted ready/in-progress work without assuming Curator/Gatekeeper admission or Inspector review duties.",
+        "Compaction is Runtime-offered for the current input at a qualifying phase transition, never inferred from a schedule or manually forced.",
         "Does not expand authorization or mirror canonical Work Item state into schedule or prompt records."
       ],
       "files": []
