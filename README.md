@@ -4,13 +4,13 @@ Agent-first autonomous Handoff, admission, coordinated delivery, verification, a
 
 **Forge autonomy through automation, minimizing human attention while preserving human judgment.**
 
-Strict admission enables bold autonomy: every admitted Handoff item is driven through to verified delivery.
+Strict admission enables bold autonomy: admitted Handoff proceeds to verified delivery unless cancelled, paused for human attention, or authorization is withdrawn.
 
 [Chinese](README.zh-CN.md)
 
 ## What it provides
 
-MAR Forge is a reusable Agent Skill for MAR-managed Workspaces. It supplies one protocol for ad hoc code review, continuous commit review, issue admission, coordinated implementation, independent verification, fix loops, local integration, and interruption recovery.
+MAR Forge is a reusable autonomous Handoff protocol for MAR-managed Workspaces, covering admission, coordinated implementation, independent verification, recovery, and local integration. Forge Inspector workflows may supply evidence and candidate work into that Handoff lifecycle.
 
 ### Applicability
 
@@ -41,7 +41,7 @@ User / external / Inspector / other sources
                    Authorized integration
 ```
 
-Inspector is an optional source, not a mandatory entry. Coordinator mediates every stage and fix loop; Workers never coordinate directly with each other. Curator is Forge's intake role, while admission is the combination of Curator acceptance and Gatekeeper approval.
+Inspector is an optional source, not a mandatory entry. Coordinator mediates all post-admission execution and Fixer/Verifier loops; Workers never coordinate directly with each other. Curator is Forge's intake role, while admission is the combination of Curator acceptance and Gatekeeper approval.
 
 Explicit work assigned to the current Session remains outside Forge Handoff:
 
@@ -98,12 +98,13 @@ The package is a root-level `SKILL.md` with focused references; no npm package, 
 
 After an explicit invocation, positive host binding, or existing Forge continuation establishes applicability, start with `SKILL.md` and load only the references needed by the task. Do not select Forge merely because an ordinary task mentions review, inspection, testing, implementation, or delivery:
 
-| Task                       | References                                                                            |
-| -------------------------- | ------------------------------------------------------------------------------------- |
-| Inspector only             | `inspector.md`; add `protocol.md` only for transfer/recovery                          |
-| Admission                  | `protocol.md` + `admission.md`                                                        |
-| Coordinator / `ship forge` | `protocol.md` + `delivery.md`; add admission only for admission coordination/recovery |
-| Templates                  | `templates.md` only when a corresponding record is needed                             |
+| Task                         | References                                                                      |
+| ---------------------------- | ------------------------------------------------------------------------------- |
+| Inspector only               | `inspector.md`; add `protocol.md` only for transfer/recovery                    |
+| Admission                    | `protocol.md` + `admission.md`                                                  |
+| Fresh `ship forge`           | `protocol.md` + `admission.md`; add `delivery.md` after ready                   |
+| Coordinator on admitted work | `protocol.md` + `delivery.md`; add admission for claimed Brief changes/recovery |
+| Templates                    | `templates.md` only when a corresponding record is needed                       |
 
 The references live under `references/`. `ship forge` means complete authorized local delivery: admission, implementation, verification, independent review, necessary task commits, and local integration of changed repositories. It does not authorize push, deployment, release, production changes, or external replies.
 

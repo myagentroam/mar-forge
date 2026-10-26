@@ -4,13 +4,13 @@
 
 **Forge autonomy through automation, minimizing human attention while preserving human judgment.**
 
-严格准入支撑大胆自治：每个已准入的 Handoff 工作项都应被推进到经过验证的交付。
+严格准入支撑大胆自治：已准入的 Handoff 应推进到经过验证的交付，但取消、人工关注暂停或授权撤回除外。
 
 [English](README.md)
 
 ## 能力
 
-MAR Forge 是用于 MAR 托管 Workspace 的可复用 Agent Skill，以一套协议覆盖临时专项审查、连续 Commit 审查、Issue 准入、协同实现、独立验证、Fix Loop、本地集成和中断恢复。
+MAR Forge 是用于 MAR 托管 Workspace 的可复用自治 Handoff 协议，覆盖准入、协同实现、独立验证、恢复和本地集成。Forge Inspector 工作流可向该 Handoff 生命周期提供证据与候选工作。
 
 ### 适用条件
 
@@ -41,7 +41,7 @@ Forge 采用显式 opt-in，不是 MAR 的默认开发行为。只有用户显�
                          授权内集成
 ```
 
-Inspector 是可选来源，不是必经入口。Coordinator 协调每个阶段和 Fix Loop，Worker 之间不直接协调。Curator 是 Forge 的接收角色，admission 由 Curator 接收与 Gatekeeper 批准两道门禁组成。
+Inspector 是可选来源，不是必经入口。Coordinator 协调准入后的执行与 Fixer/Verifier Loop，Worker 之间不直接协调。Curator 是 Forge 的接收角色，admission 由 Curator 接收与 Gatekeeper 批准两道门禁组成。
 
 明确交给当前 Session 的工作不进入 Forge Handoff：
 
@@ -98,12 +98,13 @@ npx skills add myagentroam/mar-forge --skill mar-forge -a universal --copy
 
 显式调用、正向宿主绑定或既有 Forge 续作确认适用后，先读 `SKILL.md`，再只加载当前任务需要的 references。不要仅因普通任务提到 review、inspection、测试、实现或交付就选择 Forge：
 
-| 任务                       | References                                                    |
-| -------------------------- | ------------------------------------------------------------- |
-| 仅 Inspector               | `inspector.md`；仅转交/恢复时增加 `protocol.md`               |
-| 准入                       | `protocol.md` + `admission.md`                                |
-| Coordinator / `ship forge` | `protocol.md` + `delivery.md`；仅准入协调或恢复时加 admission |
-| 模板                       | 需要对应记录时才读取 `templates.md`                           |
+| 任务                       | References                                                       |
+| -------------------------- | ---------------------------------------------------------------- |
+| 仅 Inspector               | `inspector.md`；仅转交/恢复时增加 `protocol.md`                  |
+| 准入                       | `protocol.md` + `admission.md`                                   |
+| 新的 `ship forge`          | `protocol.md` + `admission.md`；ready 后加 `delivery.md`         |
+| Coordinator 处理已准入工作 | `protocol.md` + `delivery.md`；Brief 变化/准入恢复时加 admission |
+| 模板                       | 需要对应记录时才读取 `templates.md`                              |
 
 References 位于 `references/`。`ship forge` 默认表示完整授权的本地交付：准入、实现、验证、独立审查、必要任务 commit 和变更仓库的本地集成；不包含 push、部署、发布、生产变更或外部回复。
 

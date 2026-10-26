@@ -27,13 +27,13 @@ Record the observed behavior, trigger, impact, affected domain, and verifiable c
 Use the host's native template and [templates.md](templates.md) as writing aids, not mandatory empty headings. Curator delivers an executable Brief rather than leaving clarification to Coordinator.
 
 - **Bug:** expected behavior and repair boundary must be clear. Restore already confirmed behavior without asking again merely because the fix changes the current faulty behavior. Record credible but unreproduced observations and their evidence limitations.
-- **Feature/Requirement/Improvement:** an authorized user must have confirmed the goal and decision to enter development. A mentioned implementation idea is not a confirmed design. Important unresolved tradeoffs use needs-decision.
+- **Feature/Requirement/Improvement:** an authorized user must have confirmed the goal and decision to enter development. A mentioned implementation idea is not a confirmed design. Important unresolved tradeoffs use needs-attention with reason `decision`.
 - **Question:** record the question and answer when tracking is useful; do not manufacture engineering scope or ready state.
 - **Duplicate/already tracked:** update the canonical item with substantive new evidence and preserve its current owner, state, and notification history.
 
 Curator checks that expected behavior, scope, acceptance, and minimum verification are clear and proportionate. Do not require E2E or real-model tests for every item, and do not reduce a complex stateful task to "tests pass." Note real environment or authorization gaps. Priority reflects impact and deadline; risk reflects failure consequences; neither replaces verification.
 
-When these conditions are met, Curator assigns or advances the host-declared Brief revision, records **Curator accepted** through the host's admission mapping, and requests Gatekeeper review. Material Brief changes require a new revision and acceptance before resubmission; editorial changes preserve the current revision. Curator acceptance alone never sets ready. Include any explicitly authorized urgency and the existing Coordinator contact in that request. When a human decision is missing, use needs-decision and the protocol's notification rules instead of requesting Gatekeeper approval as a substitute.
+When these conditions are met, Curator assigns or advances the host-declared Brief revision, records **Curator accepted** through the host's admission mapping, and requests Gatekeeper review. Material Brief changes require a new revision and acceptance before resubmission; editorial changes preserve the current revision. Curator acceptance alone never sets ready. Include any explicitly authorized urgency and the existing Coordinator contact in that request. When a human decision is missing, use needs-attention with reason `decision` and the protocol's notification rules instead of requesting Gatekeeper approval as a substitute.
 
 ## Gatekeeper technical fact check
 
@@ -52,7 +52,7 @@ Gatekeeper runs only a focused check that can change its decision. It does not r
 
 - **Approved:** evidence and readiness are sufficient. Gatekeeper records approval and, if the item remains unowned and otherwise eligible, performs the native ready transition. Do not send it back for a redundant Curator state update.
 - **Needs evidence:** a specific fact, reproduction, source reference, or verification condition is missing. Identify the smallest decisive evidence and leave the item unready.
-- **Needs decision:** a real human choice or authorization gap remains. Curator records the decision and notification; Gatekeeper does not choose.
+- **Needs attention:** a human decision, authorization, resource action, or persistent blocker remains. Curator records the reason and notification; Gatekeeper does not choose or invent technical facts.
 - **Not confirmed:** the alleged defect or premise is not supported. Do not admit it as a Bug; Curator may retain a question/investigation item or close it with evidence as authorized.
 
 Approval records the checked Brief revision and decisive evidence. After a material Brief change, Curator advances the revision and reaccepts the Brief, staling that approval; Gatekeeper then rechecks only the changed readiness judgment and its effects, without rediscovering unchanged facts. Gatekeeper returns the actual decision to the original Curator for the user-facing receipt; rejection includes the precise reason so Curator can correct or clarify and resubmit. Do not create a replacement role or reset the item's ownership history.

@@ -28,7 +28,7 @@ For MAR-managed Workspaces, Forge defines workflow judgment and role boundariesâ
 
 ## Scope
 
-Forge governs autonomous Handoff only. Explicit current-Session work remains Continue under host development rules and outside Forge; do not apply admission or delegation for symmetry.
+Forge's delivery workflow governs autonomous Handoff. Explicitly configured Inspector Sessions may review independently and supply evidence without entering Handoff. Other explicit current-Session work remains Continue under host development rules and outside Forge; do not apply admission or delegation for symmetry.
 
 The admitted chain is `Curator -> Gatekeeper -> Coordinator -> Fixer -> Verifier`, then authorized integration. Inspector and other sources feed Curator but are not mandatory; Coordinator mediates every Fixer/Verifier loop.
 
@@ -36,7 +36,8 @@ The admitted chain is `Curator -> Gatekeeper -> Coordinator -> Fixer -> Verifier
 
 - **Inspector only:** read [inspector.md](references/inspector.md). Add [protocol.md](references/protocol.md) only for authorized transfer, ownership, or Handoff recovery.
 - **Admission:** read [protocol.md](references/protocol.md) and [admission.md](references/admission.md).
-- **Coordinator / `ship forge`:** read [protocol.md](references/protocol.md) and [delivery.md](references/delivery.md); add [admission.md](references/admission.md) only for admission coordination or recovery, not to assume Curator/Gatekeeper roles.
+- **Fresh `ship forge`:** read [protocol.md](references/protocol.md) and [admission.md](references/admission.md); after ready, add [delivery.md](references/delivery.md).
+- **Coordinator on admitted work:** read [protocol.md](references/protocol.md) and [delivery.md](references/delivery.md); add [admission.md](references/admission.md) only for a claimed Brief change or admission recovery, not to assume Curator/Gatekeeper roles.
 - **Templates:** use [templates.md](references/templates.md) only when a Brief, evidence report, admission decision, Worker dispatch, or decision record is needed. Templates are aids, not mandatory empty sections.
 
 Host instructions bind Work Items, Sessions, repositories, models, engineering rules, notifications, evidence paths, and the delivery point. Follow these bindings without copying them into this Skill.
@@ -45,4 +46,4 @@ Host instructions bind Work Items, Sessions, repositories, models, engineering r
 
 - Start from current source, tests, authoritative design, actual state, and the user's current instruction. Do not treat an old plan, prior receipt, or role title as proof.
 - Reuse authorized Sessions and records; preserve user work and ownership, and reconcile uncertain side effects before retrying. Do not create parallel role instances, task databases, or SOPs.
-- Drive admitted work to verified authorized delivery, not merely scheduling or a candidate commit. Keep Work Items to Briefs, meaningful transitions, decisions, and outcomes; retain process chatter and raw evidence outside user-facing records.
+- Drive admitted work to verified authorized delivery unless cancelled, paused for human attention, or authorization is withdrawn; preserve recovery instead of forcing completion. Keep Work Items to Briefs, meaningful transitions, decisions, and outcomes; retain process chatter and raw evidence outside user-facing records.

@@ -33,18 +33,18 @@ Coordination within the existing item and user mandate is binding workflow guida
 
 The host maps these semantics to native fields. Typical tracker states are:
 
-| Semantic state              | Meaning                                                                                                                                     |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Open, unadmitted            | Facts are saved but clarification, evidence, a dependency, or admission remains. Do not execute from the queue.                             |
-| Open, needs-decision        | Human attention is required for a decision or a blocker that persists after bounded autonomous recovery. Preserve owner and recovery point. |
-| Open, ready                 | Curator accepted and Gatekeeper approved the item; it is unowned and executable within the recorded mandate.                                |
-| Open, in-progress           | A valid owner has claimed it. Remove ready and preserve the actual execution stage.                                                         |
-| Open, awaiting verification | Implementation exists but required validation or acceptance remains. Do not requeue implementation automatically.                           |
-| Closed                      | Delivered and verified at the agreed point, or closed with a documented duplicate/rejected reason.                                          |
+| Semantic state              | Meaning                                                                                                                        |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Open, unadmitted            | Facts are saved but clarification, evidence, a dependency, or admission remains. Do not execute from the queue.                |
+| Open, needs-attention       | Human decision, authorization, resource/action, or a persistent blocker requires attention. Preserve owner and recovery point. |
+| Open, ready                 | Curator accepted and Gatekeeper approved the item; it is unowned and executable within the recorded mandate.                   |
+| Open, in-progress           | A valid owner has claimed it. Remove ready and preserve the actual execution stage.                                            |
+| Open, awaiting verification | Implementation exists but required validation or acceptance remains. Do not requeue implementation automatically.              |
+| Closed                      | Delivered and verified at the agreed point, or closed with a documented duplicate/rejected reason.                             |
 
 Workflow states are mutually exclusive. Open/Closed is the item lifecycle, not proof that a Run stopped or delivery completed. Native labels, comments, or a dedicated admission record may represent Curator acceptance and Gatekeeper approval; do not create duplicate parallel state systems.
 
-Bug, enhancement, question, duplicate, priority, risk, and verification are independent dimensions. A high-priority item still needs admission. High risk alone is not needs-decision; an unresolved tradeoff or permission gap is.
+Bug, enhancement, question, duplicate, priority, risk, and verification are independent dimensions. A high-priority item still needs admission. High risk alone is not needs-attention; an unresolved tradeoff or permission gap is.
 
 ## Claim and recovery
 
@@ -62,7 +62,7 @@ Only the Coordinator scans and restores the Handoff queue. Workers finish their 
 
 ## Local recovery layout
 
-Unless the host declares an equivalent, keep private Forge checkpoints and evidence in an ignored `.forge/<role>/` directory. Use the role names `inspector`, `curator`, `gatekeeper`, `coordinator`, `fixer`, and `verifier`; nest Work Item or run identities below the role to isolate concurrent work. These files support recovery only and are not a second queue, tracker, or completion proof.
+Unless the host declares an equivalent, a role that requires private local recovery state uses an ignored `.forge/<role>/` directory with its existing lowercase role name. Nest Work Item or run identities below the role to isolate concurrent work; do not create empty role directories by convention. These files support recovery only: do not mirror canonical Work Item state or create a second queue, tracker, or completion proof.
 
 ## Brief and evidence
 
@@ -78,9 +78,9 @@ A **Brief revision** is a native item revision, reliable update sequence, or exp
 
 ## Human attention and notifications
 
-For technical, environment, and verification blockers, first exhaust bounded repair, internal coordination, and recovery within existing authorization. Use needs-decision as the single human-attention state when a person must choose behavior, scope, architecture, resources, permission, or residual risk, or when one of those blockers persists after autonomous attempts. Do not delay a human-owned choice for repair attempts, escalate the first recoverable failure, or create a parallel blocked/needs-attention state.
+For technical, environment, and verification blockers, first exhaust bounded repair, internal coordination, and recovery within existing authorization. Use needs-attention as the single human-attention state when human judgment, authorization, or resource action is required, or when one of those blockers persists after autonomous attempts. Do not delay a known human decision or required action for repair attempts, escalate the first recoverable failure, or create a parallel blocked state.
 
-Record the precise question, impact, feasible options, recommendation, owner, and recovery point before using the host-authorized notification channel. The Curator handles an unowned item; the current owner handles a claimed item. Deduplicate by item and substantive decision version. Notification acceptance is neither delivery nor approval.
+Record one reason: `decision`, `authorization`, `resource`, or `blocker`. Every attention record includes the precise need, impact, owner, and recovery point. A decision also includes feasible options and a recommendation; other reasons state the concrete human action and supporting evidence instead of inventing a choice. The Curator handles an unowned item; the current owner handles a claimed item. Deduplicate by item and substantive attention record. Notification acceptance is neither delivery nor approval.
 
 Write the human decision or unblocking result back with its author, time, scope/candidate, and limitations. Resume the original stage only after all remaining gates are satisfied. Silence, a third-party label, or a request for more information is not approval.
 

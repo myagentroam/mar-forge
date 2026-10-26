@@ -33,10 +33,10 @@ Forge admission — Curator accepted. Brief revision <logical revision>; Brief a
 Gatekeeper decision:
 
 ```text
-Forge admission — Gatekeeper approved | needs evidence | needs decision | not confirmed.
+Forge admission — Gatekeeper approved | needs evidence | needs attention | not confirmed.
 Checked: Brief revision <native revision or logical marker>; evidence <decisive source or reproduction references>.
 Basis: <concise technical judgment and any exact gap>.
-Next: ready if unowned and otherwise eligible | Curator correction | human decision | no Bug admission.
+Next: ready if unowned and otherwise eligible | Curator correction | human attention | no Bug admission.
 ```
 
 Only meaningful gate transitions are recorded. Do not turn technical review into an investigation diary or duplicate the Brief.
@@ -99,7 +99,7 @@ Review this delta and affected behavior, preserve prior reports, and return a ne
 Worker final response (not a Session message):
 
 ```text
-<Work Item URL>, <repository/SHA>: <repair complete, PASS, blocker, or decision needed>; evidence <reference>; directory <released or exact blocker>; next <re-review, integration, or recovery>.
+<Work Item URL>, <repository/SHA>: <repair complete, PASS, blocker, or attention needed>; evidence <reference>; directory <released or exact blocker>; next <re-review, integration, or recovery>.
 ```
 
 ## Verifier report
@@ -127,11 +127,12 @@ Worker final response (not a Session message):
 ## Human attention or decision record
 
 ```text
-Attention needed: <human-owned decision or blocker persisting after bounded autonomous recovery>.
+Reason: decision | authorization | resource | blocker.
+Attention needed: <decision question, required authorization/resource action, or persistent blocker>.
 Stage and candidate: <current stage and exact candidate, if any>.
 Impact: <why execution cannot safely continue>.
-Options: <bounded feasible choices and consequences>.
-Recommendation: <one recommendation with basis>.
+Options and recommendation: <for decision only; bounded choices, consequences, and basis>.
+Required action and evidence: <for authorization/resource/blocker; do not invent a decision>.
 Owner/recovery: <preserved owner and resume point>.
 ```
 

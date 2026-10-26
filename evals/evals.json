@@ -7,6 +7,7 @@
       "expected_output": "Loads protocol, admission, and delivery; requires Curator acceptance and independent Gatekeeper approval before ready; drives Coordinator, Fixer, and Verifier through content then pointer commits and local integration without pushing or adding another approval role.",
       "files": [],
       "expectations": [
+        "Fresh ship forge loads protocol and admission before delivery instead of using the admitted-work Coordinator route.",
         "Requires Curator acceptance and Gatekeeper approval before Coordinator claims the item.",
         "Assigns implementation to Fixer and independent candidate review to Verifier.",
         "Commits and integrates content before the dependent pointer, without push, deployment, release, or external reply."
@@ -84,10 +85,11 @@
     {
       "id": 8,
       "prompt": "A Feature Brief is technically executable but requires choosing between two incompatible public behaviors. Curator has accepted it and requests Gatekeeper approval.",
-      "expected_output": "Gatekeeper returns needs-decision instead of choosing product behavior; Curator records and notifies the human decision through the host binding.",
+      "expected_output": "Gatekeeper returns needs-attention with reason decision instead of choosing product behavior; Curator records and notifies the human decision through the host binding.",
       "expectations": [
         "Does not mark ready or claim the item.",
-        "Records the precise options, impact, recommendation, and recovery point.",
+        "Records reason decision with the precise options and recommendation.",
+        "Records the impact and recovery point.",
         "Gatekeeper does not make the product decision or substitute technical approval for human judgment.",
         "Does not delay a human-owned choice by requiring implementation repair attempts."
       ],
@@ -101,7 +103,7 @@
         "Reuses the valid Claim, candidate, and candidate-bound PASS.",
         "Does not restart implementation, create replacement Workers, or repeat unaffected verification.",
         "Verifies actual artifacts and resumes only the unfinished writeback and integration stages.",
-        "Uses the host-declared role-based .forge recovery layout without treating it as a second queue."
+        "Uses the role-based .forge recovery layout only for roles that need it, without mirroring canonical Work Item state or creating a second queue."
       ],
       "files": []
     },
@@ -119,12 +121,12 @@
     {
       "id": 11,
       "prompt": "The same blocking Finding F1 remains unresolved after two complete repair, verification, and re-review cycles. The latest Verifier again confirms the same failure. Continue.",
-      "expected_output": "Stops the unchanged loop, performs bounded technical reassessment and recovery, then uses the single needs-decision human-attention state if the blocker persists.",
+      "expected_output": "Stops the unchanged loop, performs bounded technical reassessment and recovery, then uses needs-attention with reason blocker if the problem persists.",
       "expectations": [
         "Does not dispatch a third unchanged repair without new technical evidence or a materially different direction.",
         "Does not rename F1 or create new Workers to reset the cycle count.",
         "Does not escalate immediately after two failed rounds without technical reassessment and bounded autonomous recovery.",
-        "Records needs-decision with the exact candidate, evidence, technical summary, and recovery point when the blocker persists; does not create a separate blocked or needs-attention state."
+        "Records needs-attention with reason blocker, exact candidate, evidence, required human action, and recovery point when the problem persists; does not create a separate blocked state."
       ],
       "files": []
     },
@@ -191,6 +193,54 @@
         "Does not treat direct work as a Forge execution entry merely because the Skill was loaded.",
         "Does not route through Curator, Gatekeeper, Coordinator, Fixer, Verifier, or Forge Work Item state.",
         "Continues under ordinary repository instructions without requiring MAR Forge: disabled."
+      ],
+      "files": []
+    },
+    {
+      "id": 18,
+      "prompt": "Coordinator's existing credentials expire during Handoff verification. A bounded retry and the available credential refresh fail; the user must re-authenticate. No behavior, scope, or architecture choice remains. Continue.",
+      "expected_output": "Uses needs-attention with reason resource, requests the concrete re-authentication action, and preserves the exact recovery point without inventing a product decision.",
+      "expectations": [
+        "Does not keep retrying unavailable credentials or expand authorization.",
+        "Uses needs-attention with reason resource rather than reason decision or a separate blocked state.",
+        "States the required re-authentication action, supporting evidence, and exact resume point without forcing options or a product recommendation.",
+        "Resumes the original verification stage after the user supplies valid credentials."
+      ],
+      "files": []
+    },
+    {
+      "id": 19,
+      "prompt": "Coordinator claimed Work Item #42 at Brief revision 7 and its Fixer is active. The user materially changes expected behavior and acceptance, producing revision 8. Unrelated #43 is ready with enough capacity. Continue both safely.",
+      "expected_output": "Pauses only #42's affected scope, preserves its Claim and recovery evidence, and re-admits revision 8 without restarting the whole workflow; #43 continues independently.",
+      "expectations": [
+        "Does not execute the changed #42 scope using revision-7 approval or represent old verification as covering revision 8.",
+        "Preserves the existing owner, candidate, and recovery point while Curator reaccepts and Gatekeeper rechecks only the affected scope.",
+        "Revalidates the changed candidate scope without resetting ownership or rediscovering unchanged facts.",
+        "Does not let #42's pause block unrelated #43 or create another Coordinator."
+      ],
+      "files": []
+    },
+    {
+      "id": 20,
+      "prompt": "Verifier passed exact candidate C at Brief revision 3. During local integration, a semantic conflict with develop requires changing retry behavior, although the Brief is unchanged. Complete delivery safely.",
+      "expected_output": "Treats the behavior-changing conflict resolution as a new candidate, runs focused Fixer/Verifier work, and integrates only after a matching new PASS.",
+      "expectations": [
+        "Does not use C's original PASS for the changed integration candidate.",
+        "Rechecks the conflict resolution and affected retry behavior without repeating unrelated full review.",
+        "Does not make Fixer rebase or replay solely because develop moved.",
+        "Binds the new conclusion and integration verification to the exact resolved candidate."
+      ],
+      "files": []
+    },
+    {
+      "id": 21,
+      "prompt": "An external OSS Issue was mapped to an internal Forge candidate. Gatekeeper concludes Not confirmed. The user has not authorized any public reply or external Issue mutation. Process the result.",
+      "expected_output": "Handles the internal item according to evidence and authorization while leaving the external OSS Issue unchanged and preserving the source link.",
+      "expectations": [
+        "Does not admit the unsupported premise as a Bug or mark the item ready.",
+        "Does not close, comment on, or otherwise mutate the external OSS Issue without explicit authorization.",
+        "May retain an internal question/investigation item or close it only as authorized, with precise evidence.",
+        "Does not disclose private analysis in an external reply or treat internal rejection as external authorization."
       ],
       "files": []
     }
