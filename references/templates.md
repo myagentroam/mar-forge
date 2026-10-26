@@ -59,13 +59,19 @@ Scope: <necessary boundaries and exclusions; reference the Brief when already cl
 Directories and bases: <absolute host-declared task workspace, repository, branch where applicable, base SHA for each repository>
 Verification: <minimum behaviors and test levels; real environment/authorization limits if any>
 Evidence: <Fixer report and raw result directory>
-Authorization: <actual implementation, task commit, and special validation scope>
+Authorization: <actual implementation and special validation scope; task commit is authorized for the queued follow-up>
 Coordinator: <native Session ID>
 
-Deliver base/HEAD, changes, actual verification and evidence, remaining limits, and directory-release state. Do not edit the Work Item, integrate, message other Sessions, or wait for downstream work. Finish your turn after saving the result.
+Implement and perform an initial review/fix loop with the required verification. Deliver base, changes, actual review and verification evidence, remaining limits, and directory-release state. Do not commit in this initial Run, edit the Work Item, integrate, message other Sessions, or wait for downstream work. Finish your turn after saving the result.
 ```
 
-If the host uses a one-time closing self-check, Coordinator queues its exact configured message once after the first Fixer Run starts and waits for its actual execution before Verifier dispatch.
+Immediately after the initial dispatch is accepted, Coordinator uses non-interrupting queue semantics to send exactly this message to the same Fixer once:
+
+```text
+review fix loop again, commit
+```
+
+The queued follow-up performs another review/fix loop, affected verification, and task commits. Coordinator waits for its actual execution and directory release before Verifier dispatch; later repair loops do not repeat it.
 
 ## Verifier initial dispatch
 
@@ -86,7 +92,7 @@ Coordinator to Fixer:
 
 ```text
 <Work Item URL>, candidate <repository/SHA>: blocking <Finding IDs>, evidence <Verifier report>.
-Repair, rerun affected verification, commit, and return the new SHA with per-Finding results and directory release. Do not repeat a one-time closing queue.
+Repair, rerun affected verification, commit, and return the new SHA with per-Finding results and directory release. Do not repeat the initial review/fix follow-up.
 ```
 
 Coordinator to Verifier:

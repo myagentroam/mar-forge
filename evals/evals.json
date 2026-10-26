@@ -10,6 +10,7 @@
         "Fresh ship forge loads protocol and admission before delivery instead of using the admitted-work Coordinator route.",
         "Requires Curator acceptance and Gatekeeper approval before Coordinator claims the item.",
         "Assigns implementation to Fixer and independent candidate review to Verifier.",
+        "Queues the exact one-time follow-up after initial Fixer dispatch; both Runs perform review/fix, and the follow-up commits before independent verification.",
         "Commits and integrates content before the dependent pointer, without push, deployment, release, or external reply."
       ]
     },
@@ -267,6 +268,18 @@
         "Inspector records pending before sending, replaces it only with the actual queued receipt, reconciles unknown results before new units, and never resends an already queued Finding.",
         "Inspector does not directly create or edit Work Items, mark ready, dispatch Workers, fix Findings, or wait for implementation before advancing a completed review cursor.",
         "The unconfirmed hypothesis remains local and no Finding-free review creates a Handoff."
+      ],
+      "files": []
+    },
+    {
+      "id": 24,
+      "prompt": "Coordinator is starting a new Fixer for an admitted Work Item. Show the initial dispatch follow-up, commit timing, and Verifier handoff. A later Verifier repair loop should not repeat initial setup.",
+      "expected_output": "Immediately after the normal initial dispatch, Coordinator queues exactly 'review fix loop again, commit' once to the same Fixer. The first Run implements, performs an initial review/fix loop, and tests without committing; the queued Run performs another review/fix loop, reverifies, and commits before Coordinator dispatches Verifier.",
+      "expectations": [
+        "Uses non-interrupting queue semantics for the exact message 'review fix loop again, commit' immediately after the initial dispatch is accepted, without paraphrasing, adding text, substituting a steer, or waiting for the first Run to finish.",
+        "The initial Fixer Run implements, performs an initial review/fix loop and required verification but does not commit; the queued follow-up performs another review/fix loop, affected reruns, and every required task commit.",
+        "Coordinator verifies actual follow-up execution, final commits, and directory release before Verifier dispatch rather than treating queue acceptance or the first Run's terminal state as candidate completion.",
+        "The message is sent only once for the initial dispatch and is not repeated for subsequent Verifier-requested repairs."
       ],
       "files": []
     }

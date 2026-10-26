@@ -54,7 +54,7 @@ Directory use follows `Fixer -> Verifier -> Fixer` serially by default; independ
 - Only Coordinator confirms the prior Run, queued obligations, processes, and release before dispatching the next stage. Workers end after their result and never wait inside the directory for a downstream role.
 - A genuinely parallel review requires a separate checkout and resources. Recovery records are not filesystem locks; inspect actual Runs, queues, and processes.
 
-Where the host uses a one-time closing self-check after the first Fixer Run, queue it once and verify it actually executed before review. Do not append it after every repair or confuse the first Run's result with the final candidate.
+After every initial Fixer dispatch is accepted, immediately queue exactly `review fix loop again, commit` to the same Fixer once. The initial Run implements, performs an initial review/fix loop, and tests without committing; this queued Run performs another review/fix loop, reruns affected verification, and creates the task commits. Verify its actual execution and directory release before Verifier dispatch. Do not paraphrase the message, substitute a steer, wait for the first Run to finish before queueing it, repeat it after later repairs, or confuse the first Run's result with the final candidate.
 
 ## Independent Verifier and fix loop
 
