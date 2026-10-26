@@ -1,6 +1,6 @@
 # Inspector: evidence-driven code review
 
-Use this reference for ad hoc code, architecture, or module reviews and continuous commit review. Inspector produces evidence and conclusions; it does not automatically fix, commit, transfer, notify, or deploy.
+Use this reference for ad hoc code, architecture, or module reviews and continuous commit review. Inspector produces evidence and conclusions; it does not automatically fix, commit, notify, or deploy. Continuous commit review automatically transfers confirmed Findings to Curator for ordinary Handoff; independent ad hoc review does not transfer unless the user explicitly requests it.
 
 ## Scope and evidence discipline
 
@@ -26,7 +26,7 @@ Use a distinguishable review ID such as `20261025T103000Z-eb06ac33` or `20261025
 
 Update a checkpoint at the start, after a substantive phase or external side effect, on interruption, and at completion—not after every read or search. Commit and topic checkpoints are independent. Allow one active review per mode per checkout; inspect an existing owner before resuming or replacing an interrupted record. Use separate checkouts for genuinely parallel reviews.
 
-Checkpoints are recovery aids, not tracked indexes, design facts, Work Items, or completion proof. Once a finding is transferred, the Work Item owns subsequent state and the local checkpoint retains only its receipt. Never record secrets, hidden reasoning, full conversations, or irrelevant personal data. Historical authorization in a checkpoint does not revive expired permission.
+Checkpoints are recovery aids, not tracked indexes, design facts, Work Items, or completion proof. A queued handoff is a transfer receipt, not Curator acceptance or implementation completion. Once Curator accepts a finding into a Work Item, that item owns subsequent state. Never record secrets, hidden reasoning, full conversations, or irrelevant personal data. Historical authorization in a checkpoint does not revive expired permission.
 
 Keep only fields needed for recovery and omit empty sections:
 
@@ -48,6 +48,7 @@ run_dir: .forge/inspector/runs/<review-id>/
 scope: <actual scope and exclusions>
 covered: <behaviors, modules, and evidence checked>
 findings: <IDs, classifications, report links, and any Work Item URLs>
+handoff: <none, or per-Finding pending/queued state and Curator receipt>
 validation: <actual results and explicit gaps>
 external_effects: <actual side effects and receipts; omit if none>
 remaining: <unfinished review or validation>
@@ -71,18 +72,21 @@ Use `cursor` for the last completed full SHA on the named branch and `pending` f
 
 Advance by first-parent review units unless the user specifies otherwise. A normal commit is compared with its parent. A merge is one unit: inspect the full introduced diff and conflict handling relative to the first parent, reusing still-valid reviews of merged commits where appropriate. A batched report lists every SHA.
 
-1. Resume non-empty `pending` before selecting another commit. Otherwise select the next unit after `cursor` and record its base/HEAD and run directory.
+1. Resume non-empty `pending` before selecting another commit. Reconcile any `handoff: pending` Finding before selecting a new unit; do not resend a Finding already recorded as queued. Otherwise select the next unit after `cursor` and record its base/HEAD and run directory.
 2. Inspect actual diff, design, tests, and direct effects. For a Gitlink change, resolve old/new submodule SHAs and review their diff; a missing object or unclear relationship is a blocker, not an empty change.
-3. Only after the scope, candidates, Findings, verification gaps, and report have conclusions may `cursor` advance to HEAD and `pending` clear. Review completion does not mean its Findings were fixed.
-4. Preserve `pending` on interruption or insufficient evidence. Reconcile existing side effects before resuming to avoid duplicate transfer, notification, or tests.
+3. Give each confirmed Finding a stable local ID and transfer its evidence to Curator for normal reception, deduplication, and the two admission gates. Include repository, base/HEAD, report reference, and enough context to reproduce or assess it. Do not transfer hypotheses or verification-only gaps as defects. Inspector must not create or edit Work Items, choose `ready`, dispatch Workers, or fix the Finding.
+4. Record `handoff: pending` before sending and replace it with the actual queued receipt afterward. An unknown send result remains pending for reconciliation. Review completion and Handoff delivery are separate: the cursor may advance after the review and pending/queued state are recorded, but the next round reconciles pending delivery before new work.
+5. Only after the scope, candidates, Findings, verification gaps, and report have conclusions may `cursor` advance to HEAD and `pending` clear. Review completion does not mean its Findings were fixed. Preserve `pending` on interruption or insufficient evidence.
 
-New branch commits wait for later rounds. A finding may remain open locally when no fix or transfer is authorized. After authorized transfer, mark it transferred with its Work Item URL and stop tracking its implementation locally.
+New branch commits wait for later rounds. This automatic Curator handoff applies to both scheduled continuous review and user-requested sequential advancement through the same commit cursor. After a queued handoff, stop tracking implementation locally; later Curator or Work Item state is not an Inspector completion condition.
 
 ## Ad hoc topic mode
 
 Define falsifiable coverage rather than "look deeper." Record topic, baseline/current HEAD, behavioral or module scope, explicit exclusions, meaningful covered/remaining units, and a specific next action. A cross-end call chain proves only the path actually inspected; reviewing several components does not establish independent exhaustive protocol coverage.
 
 Reuse confirmed conclusions and recheck only changes on resume. Do not let a topic grow into a whole-repository review without redefining scope. Mark complete only when all declared units have conclusions and `remaining` is empty; exclusions are removed from both scope and remaining. Sampling is never described as exhaustive coverage.
+
+Ad hoc findings remain report-only unless the user explicitly asks to transfer them. Do not silently apply continuous-review handoff authorization to an independent topic, even when its target is a commit.
 
 ## Per-round report
 
@@ -109,7 +113,7 @@ Each run directory contains at least `report.md` with only relevant sections:
 
 ## Side effects and next action
 
-<Actual Work Item/fix effects and one next action; omit if none>
+<Actual Curator handoff, Work Item/fix effects and one next action; omit if none>
 ```
 
 On resume, read the fixed checkpoint, latest report, and only cited evidence needed for the next decision. Verify candidate SHA, worktree, and prior side effects. Stop when necessary validation and records are complete.

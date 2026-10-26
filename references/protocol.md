@@ -14,6 +14,8 @@ Forge's autonomous delivery entry is Handoff. Choose behavior from the user's in
 
 A request to transfer findings or work to Curator means ordinary Handoff unless the user explicitly limits it to filing, investigation, or paused work. Do not invent a "not ready" restriction. Urgency changes scheduling, never the two admission gates or verification requirements.
 
+A host may authorize continuous Inspector review to transfer confirmed Findings automatically. This authorizes ordinary Handoff through Curator only, not Inspector admission or implementation; independent ad hoc reviews still require an explicit transfer request.
+
 ## Roles and authority
 
 Each role uses the existing host-declared Session and native identity. Inspect actual identity, Workspace, Run, queue, pause, and capability before contact. Names are discovery aids, not authorization or proof of delivery.

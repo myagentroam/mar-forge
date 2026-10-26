@@ -15,13 +15,13 @@
     },
     {
       "id": 2,
-      "prompt": "In an explicitly configured Forge Inspector Session, review commit 9f31c2a and its direct effects. This is read-only: check the implementation, tests, and design, and make it possible to resume after an interruption.",
+      "prompt": "In an explicitly configured Forge Inspector Session, perform an independent ad hoc review of commit 9f31c2a and its direct effects. This is read-only: check the implementation, tests, and design, and make it possible to resume after an interruption.",
       "expected_output": "Loads inspector without protocol, binds the exact candidate, performs static-first review with recovery records, separates confirmed findings from speculation, and does not run exploratory tests, fix, or create a Work Item.",
       "files": [],
       "expectations": [
         "Loads inspector without requiring protocol for a review with no transfer, ownership, or Handoff recovery.",
         "Binds the review to the exact commit and its real parent or base.",
-        "Uses .forge/inspector/commit.md and a per-round report for recovery.",
+        "Uses .forge/inspector/topic.md and a per-round report for recovery.",
         "Separates confirmed findings from unconfirmed candidates and does not automatically fix or transfer them.",
         "Starts with static code, design, and existing test evidence; runs a focused diagnostic only for a concrete candidate when static evidence is insufficient and the result can change its classification."
       ]
@@ -250,10 +250,23 @@
       "expected_output": "Persistent prompts bind the full roles, schedules cover only recurring subsets, scheduled and manual continuous reviews share the commit checkpoint, and the unrelated exploration uses a separate topic checkpoint.",
       "expectations": [
         "Does not treat either schedule as the role's full capability or create duplicate role Sessions.",
-        "Inspector's scheduled and manually requested sequential reviews reuse commit.md, while ad hoc exploration keeps independent scope and topic.md.",
+        "Inspector's scheduled and manually requested sequential reviews reuse commit.md and automatically transfer confirmed Findings to Curator, while ad hoc exploration keeps independent scope and topic.md without automatic transfer.",
         "Coordinator's recurring sweep covers admitted ready/in-progress work without assuming Curator/Gatekeeper admission or Inspector review duties.",
         "Compaction is Runtime-offered for the current input at a qualifying phase transition, never inferred from a schedule or manually forced.",
         "Does not expand authorization or mirror canonical Work Item state into schedule or prompt records."
+      ],
+      "files": []
+    },
+    {
+      "id": 23,
+      "prompt": "During a scheduled continuous commit review, Inspector confirms Finding F1. Later, the user manually asks Inspector to advance the same cursor; that review confirms F2. Neither trigger says 'ship forge'. A third continuous review finds only a hypothesis. Describe the handoffs and recovery records.",
+      "expected_output": "Both continuous-review triggers automatically send confirmed Findings to Curator for ordinary Handoff with evidence and stable IDs. Inspector records pending/queued receipts without duplicating sends and leaves admission and implementation to other roles. The hypothesis is not transferred.",
+      "expectations": [
+        "Scheduled and manually advanced continuous reviews have the same automatic Curator handoff behavior without requiring a separate ship forge instruction for each Finding.",
+        "Each handoff includes the report reference, repository and base/HEAD, stable Finding ID, and actionable evidence; Curator still performs reception, deduplication, and normal Gatekeeper admission.",
+        "Inspector records pending before sending, replaces it only with the actual queued receipt, reconciles unknown results before new units, and never resends an already queued Finding.",
+        "Inspector does not directly create or edit Work Items, mark ready, dispatch Workers, fix Findings, or wait for implementation before advancing a completed review cursor.",
+        "The unconfirmed hypothesis remains local and no Finding-free review creates a Handoff."
       ],
       "files": []
     }
