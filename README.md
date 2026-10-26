@@ -12,6 +12,10 @@ Strict admission enables bold autonomy: every admitted Handoff item is driven th
 
 MAR Forge is a reusable Agent Skill for MAR-managed Workspaces. It supplies one protocol for ad hoc code review, continuous commit review, issue admission, coordinated implementation, independent verification, fix loops, local integration, and interruption recovery.
 
+### Applicability
+
+Forge is opt-in, not MAR's default development behavior. Load it only for an explicit Forge invocation, a natural-language repository/Workspace declaration that it uses Forge, or continuation of an existing Forge workflow or role Session. Ordinary code review, implementation, testing, planning, and local delivery without one of those signals stay outside Forge. Accidental loading does not enable Forge, and non-Forge projects need no negative declaration.
+
 ### Execution flow
 
 ```text
@@ -62,7 +66,7 @@ Repository bindings
 Commands / branches / tests / models / evidence / authorization
 ```
 
-MAR is the target runtime for this Skill; standalone non-MAR runtimes are unsupported. Forge does not provide Session primitives, product requirements, repository engineering standards, tests, credentials, or new permissions. It does not replace authoritative design or make an Issue an authorization grant.
+MAR is the target runtime for this Skill; standalone non-MAR runtimes are unsupported. Forge is not MAR's default engineering protocol and does not provide Session primitives, product requirements, repository engineering standards, tests, credentials, or new permissions. It does not replace authoritative design or make an Issue an authorization grant.
 
 ## Requirements
 
@@ -73,6 +77,7 @@ MAR is the target runtime for this Skill; standalone non-MAR runtimes are unsupp
 
 | Binding      | Repository-owned facts                                                   |
 | ------------ | ------------------------------------------------------------------------ |
+| Eligibility  | Natural-language declaration of Forge use in root instructions           |
 | Work Items   | Tracker, repository, commands, labels, and native state mapping          |
 | Sessions     | Role identities, Runner models/effort, and queue/control semantics       |
 | Repositories | Remotes, branches, dependency order, and pointer/content relationships   |
@@ -91,7 +96,7 @@ The package is a root-level `SKILL.md` with focused references; no npm package, 
 
 ## Use
 
-Load `mar-forge` for `ship forge`, Inspector reviews, Curator intake, Gatekeeper admission, or Coordinator-led delivery. Start with `SKILL.md`, then load only the references needed by the task:
+After an explicit invocation, positive host binding, or existing Forge continuation establishes applicability, start with `SKILL.md` and load only the references needed by the task. Do not select Forge merely because an ordinary task mentions review, inspection, testing, implementation, or delivery:
 
 | Task                       | References                                                                            |
 | -------------------------- | ------------------------------------------------------------------------------------- |

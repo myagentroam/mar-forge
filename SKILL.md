@@ -1,13 +1,33 @@
 ---
 name: mar-forge
-description: Agent-first inspection, admission, coordinated delivery, verification, and recovery for MAR-managed engineering work. Use for "ship forge", Inspector reviews, Curator intake, Gatekeeper admission, and Coordinator-led Fixer/Verifier delivery.
+description: Opt-in MAR Forge engineering workflow protocol. Load only when the user explicitly invokes Forge (for example "ship forge"), the current repository or Workspace explicitly declares MAR Forge enabled, or an existing Forge workflow/role is being resumed. Do not load for ordinary code review, implementation, bug fixing, testing, planning, or delivery in projects that do not explicitly use MAR Forge.
 ---
 
 # MAR Forge
 
+## Applicability
+
+MAR Forge is opt-in, not MAR's default development behavior. Use this Skill only when at least one is true:
+
+- The user explicitly invokes Forge, such as `ship forge`, `use mar-forge`, or `send this through Forge`.
+- The current repository or Workspace explicitly states in natural language that it uses MAR Forge for the relevant workflow.
+- The current task belongs to an existing Forge workflow, Forge-tracked Work Item, recovery state, or Forge role Session, including an explicitly configured Forge Inspector Session.
+
+Otherwise, stop using this Skill and do not load its references. Do not apply Forge roles, admission gates, Work Item semantics, Continue/Handoff rules, or delivery rules; follow the repository's ordinary instructions. No negative declaration is required—absence of opt-in already means Forge is not applicable.
+
 **Forge autonomy through automation, minimizing human attention while preserving human judgment.**
 
 MAR Forge is a reusable workflow Skill for MAR-managed Workspaces. It defines engineering judgment and role boundaries, not product requirements, repository commands, or new permissions. MAR is the target runtime; MAR-hosted Runners follow MAR Session semantics. Standalone non-MAR runtimes are unsupported.
+
+## Hard invariants
+
+- Forge is opt-in; Skill availability or accidental loading does not enable Forge for a repository or task.
+- Continue does not require Handoff admission.
+- Handoff ready means Curator accepted **and** Gatekeeper approved.
+- Only Coordinator claims and orchestrates Handoff work.
+- Workers never mutate Work Item state or coordinate with each other.
+- Verifier PASS is bound to an exact candidate and evidence.
+- Forge never expands user authorization; push, deploy, release, and external replies require explicit authorization.
 
 ## Operating model
 
@@ -18,20 +38,13 @@ Forge has two execution entries:
 
 The admitted Handoff role chain is `Curator -> Gatekeeper -> Coordinator -> Fixer -> Verifier`, followed by authorized integration. Inspector and other sources feed Curator; Inspector is not a mandatory entry. Coordinator mediates every Fixer/Verifier loop.
 
+### Roles
+
 - **Inspector** investigates code, architecture, modules, commits, or a defined verification question. It reports evidence and does not automatically fix or transfer findings.
 - **Curator** is Forge's intake role. It owns reception, deduplication, clarification, and the Work Item Brief. It does not implement or dispatch Workers.
 - **Gatekeeper** independently checks technical evidence and readiness after Curator acceptance, records its decision, and performs the final ready transition after approval. It does not rewrite the Brief, rediscover the item, or replace Curator.
 - **Coordinator** is the sole Handoff orchestrator. It claims admitted work, coordinates Fixer/Verifier loops, writes back meaningful outcomes, and performs authorized integration.
 - **Fixer** implements and tests one coherent unit of work. **Verifier** independently reviews the candidate and its evidence. Workers do not modify Work Item state or message each other.
-
-## Hard invariants
-
-- Continue does not require Handoff admission.
-- Handoff ready means Curator accepted **and** Gatekeeper approved.
-- Only Coordinator claims and orchestrates Handoff work.
-- Workers never mutate Work Item state or coordinate with each other.
-- Verifier PASS is bound to an exact candidate and evidence.
-- Forge never expands user authorization; push, deploy, release, and external replies require explicit authorization.
 
 ## Load only the relevant rules
 

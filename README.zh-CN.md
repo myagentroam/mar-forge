@@ -12,6 +12,10 @@
 
 MAR Forge 是用于 MAR 托管 Workspace 的可复用 Agent Skill，以一套协议覆盖临时专项审查、连续 Commit 审查、Issue 准入、协同实现、独立验证、Fix Loop、本地集成和中断恢复。
 
+### 适用条件
+
+Forge 采用显式 opt-in，不是 MAR 的默认开发行为。只有用户显式调用 Forge、仓库／Workspace 以自然语言明确声明使用 Forge，或续作既有 Forge 工作流／角色 Session 时才加载。没有这些信号的普通代码审查、实现、测试、规划和本地交付不进入 Forge。误加载不代表启用 Forge，非 Forge 项目也无需增加反向声明。
+
 ### 执行流程
 
 ```text
@@ -62,7 +66,7 @@ MAR Forge
 命令 / 分支 / 测试 / 模型 / 证据 / 授权
 ```
 
-MAR 是本 Skill 的目标 Runtime，不支持独立非 MAR Runtime。Forge 不提供 Session 原语、产品需求、仓库工程规范、测试、凭据或新权限，也不替代权威设计；Issue 本身不构成授权。
+MAR 是本 Skill 的目标 Runtime，不支持独立非 MAR Runtime。Forge 不是 MAR 的默认工程协议，不提供 Session 原语、产品需求、仓库工程规范、测试、凭据或新权限，也不替代权威设计；Issue 本身不构成授权。
 
 ## 环境要求
 
@@ -73,6 +77,7 @@ MAR 是本 Skill 的目标 Runtime，不支持独立非 MAR Runtime。Forge 不�
 
 | 绑定      | 仓库维护的事实                                 |
 | --------- | ---------------------------------------------- |
+| 适用性    | 根指令中使用 Forge 的自然语言声明              |
 | Work Item | 跟踪器、仓库、命令、labels 与原生状态映射      |
 | Session   | 角色身份、Runner 模型/effort 与 queue/控制语义 |
 | 仓库      | 远端、分支、依赖顺序及指针/内容关系            |
@@ -91,7 +96,7 @@ npx skills add myagentroam/mar-forge --skill mar-forge -a universal --copy
 
 ## 使用方式
 
-在 `ship forge`、Inspector 审查、Curator 接收、Gatekeeper 准入或 Coordinator 交付时加载 `mar-forge`。先读 `SKILL.md`，再只加载当前任务需要的 references：
+显式调用、正向宿主绑定或既有 Forge 续作确认适用后，先读 `SKILL.md`，再只加载当前任务需要的 references。不要仅因普通任务提到 review、inspection、测试、实现或交付就选择 Forge：
 
 | 任务                       | References                                                    |
 | -------------------------- | ------------------------------------------------------------- |
