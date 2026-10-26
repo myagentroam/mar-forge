@@ -1,6 +1,6 @@
 # Forge protocol
 
-This reference owns generic Work Item and ownership semantics. The host repository maps them to its native tracker, roles, labels, and commands.
+This reference owns reusable Work Item and ownership semantics. The host repository maps them to its native tracker, roles, labels, and commands.
 
 ## Work Items and entry points
 
@@ -64,11 +64,13 @@ Only the Coordinator scans and restores the Handoff queue. Workers finish their 
 
 A Brief states the problem or goal, expected behavior, useful analysis, and completion/verification conditions in the smallest sufficient form. Simple items may be one paragraph. Record only facts and constraints that change implementation or acceptance.
 
+A **Brief revision** is a native item revision, reliable update sequence, or explicit logical revision marker that identifies the material Brief reviewed by Gatekeeper. The host declares its source; do not invent content hashes or a parallel revision database. Material changes to problem, expected behavior, scope, acceptance, or execution constraints advance the revision and stale the corresponding approval. Editorial changes that preserve meaning do not require a new gate.
+
 - Distinguish confirmed facts, hypotheses, and unknowns. Do not paste hidden reasoning, code-reading narration, deduplication logs, or an implementation diary.
 - Link stable evidence or authoritative design when useful. Do not copy an entire design or plan into the Brief.
 - Keep Session/Run/queue IDs, worktree paths, dispatch details, and raw command logs out of user-facing Briefs and outcome comments. Private recovery metadata may retain the minimum needed to resume safely.
 - Meaningful Claim/ownership changes, admission decisions, human decisions, and final delivery outcomes remain traceable. Do not add comments for tool calls, queue mechanics, or repeated progress without new information.
-- Verifier PASS binds the exact candidate and actual evidence. Insufficient evidence is not PASS. A final outcome summarizes delivered commits, acceptance, verification, and real remaining limitations, not every Fixer/Verifier round.
+- Verifier PASS binds the exact candidate, Brief revision, and actual evidence. Insufficient evidence is not PASS. A final outcome summarizes delivered commits, acceptance, verification, and real remaining limitations, not every Fixer/Verifier round.
 
 ## Decisions and notifications
 

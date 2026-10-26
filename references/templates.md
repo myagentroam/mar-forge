@@ -27,14 +27,14 @@ Do not include deduplication logs, Session/Run/queue IDs, worktree paths, dispat
 Curator acceptance:
 
 ```text
-Forge admission — Curator accepted. Brief and execution entry checked; submitted for independent Gatekeeper fact check. Not ready yet.
+Forge admission — Curator accepted. Brief revision <logical revision>; Brief and execution entry checked; submitted for independent Gatekeeper fact check. Not ready yet.
 ```
 
 Gatekeeper decision:
 
 ```text
 Forge admission — Gatekeeper approved | needs evidence | needs decision | not confirmed.
-Checked: <Brief/evidence version and decisive source or reproduction references>.
+Checked: Brief revision <native revision or logical marker>; evidence <decisive source or reproduction references>.
 Basis: <concise technical judgment and any exact gap>.
 Next: ready if unowned and otherwise eligible | Curator correction | human decision | no Bug admission.
 ```
@@ -56,7 +56,7 @@ Please claim and deliver within the existing mandate. Re-read the latest Brief a
 ```text
 You are the Fixer for <Work Item URL>. Read the latest Brief and follow repository engineering rules and Forge delivery.
 Scope: <necessary boundaries and exclusions; reference the Brief when already clear>
-Directories and bases: <absolute worktree, repository, branch, base SHA for each repository>
+Directories and bases: <absolute host-declared task workspace, repository, branch where applicable, base SHA for each repository>
 Verification: <minimum behaviors and test levels; real environment/authorization limits if any>
 Evidence: <Fixer report and raw result directory>
 Authorization: <actual implementation, task commit, and special validation scope>
@@ -109,7 +109,7 @@ Worker final response (not a Session message):
 
 ## Candidate and scope
 
-<Repository, base/HEAD, Brief version, complete range, exclusions>
+<Repository, base/HEAD, Brief revision, complete range, exclusions>
 
 ## Findings
 

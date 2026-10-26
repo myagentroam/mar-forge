@@ -33,7 +33,7 @@ Use the host's native template and [templates.md](templates.md) as writing aids,
 
 Curator checks that expected behavior, scope, acceptance, and minimum verification are clear and proportionate. Do not require E2E or real-model tests for every item, and do not reduce a complex stateful task to "tests pass." Note real environment or authorization gaps. Priority reflects impact and deadline; risk reflects failure consequences; neither replaces verification.
 
-When these conditions are met, record **Curator accepted** through the host's admission mapping and request Gatekeeper review. Curator acceptance alone never sets ready. Include any explicitly authorized urgency and the existing Coordinator contact in that request. When a human decision is missing, use needs-decision and the protocol's notification rules instead of requesting Gatekeeper approval as a substitute.
+When these conditions are met, Curator assigns or advances the host-declared Brief revision, records **Curator accepted** through the host's admission mapping, and requests Gatekeeper review. Material Brief changes require a new revision and acceptance before resubmission; editorial changes preserve the current revision. Curator acceptance alone never sets ready. Include any explicitly authorized urgency and the existing Coordinator contact in that request. When a human decision is missing, use needs-decision and the protocol's notification rules instead of requesting Gatekeeper approval as a substitute.
 
 ## Gatekeeper technical fact check
 
@@ -55,7 +55,7 @@ Gatekeeper runs only a focused check that can change its decision. It does not r
 - **Needs decision:** a real human choice or authorization gap remains. Curator records the decision and notification; Gatekeeper does not choose.
 - **Not confirmed:** the alleged defect or premise is not supported. Do not admit it as a Bug; Curator may retain a question/investigation item or close it with evidence as authorized.
 
-Approval binds the checked Brief and evidence version. Substantive changes require a new Gatekeeper check. Gatekeeper returns the actual decision to the original Curator for the user-facing receipt; rejection includes the precise reason so Curator can correct or clarify and resubmit. Do not create a replacement role or reset the item's ownership history.
+Approval records the checked Brief revision and decisive evidence. After a material Brief change, Curator advances the revision and reaccepts the Brief, staling that approval; Gatekeeper then rechecks only the changed readiness judgment and its effects, without rediscovering unchanged facts. Gatekeeper returns the actual decision to the original Curator for the user-facing receipt; rejection includes the precise reason so Curator can correct or clarify and resubmit. Do not create a replacement role or reset the item's ownership history.
 
 ## Existing ready items and dispatch
 

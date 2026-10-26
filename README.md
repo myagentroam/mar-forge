@@ -1,29 +1,85 @@
 # MAR Forge
 
-Agent-first planning, admission, code inspection, verified delivery, and recovery for MAR-managed engineering work.
+Agent-first inspection, admission, coordinated delivery, verification, and recovery for MAR-managed engineering work.
 
-**Strict admission enables bold autonomy: every task that enters Forge is driven through to verified delivery.**
+**Forge autonomy through automation, minimizing human attention while preserving human judgment.**
+
+Strict admission enables bold autonomy: every admitted Handoff item is driven through to verified delivery.
 
 [Chinese](README.zh-CN.md)
 
 ## What it provides
 
-MAR Forge is a reusable Agent Skill for MAR-managed Workspaces. It supplies a single workflow for ad hoc code review, continuous commit review, issue admission, coordinated implementation, independent verification, fix loops, local integration, and interruption recovery.
+MAR Forge is a reusable Agent Skill for MAR-managed Workspaces. It supplies one protocol for ad hoc code review, continuous commit review, issue admission, coordinated implementation, independent verification, fix loops, local integration, and interruption recovery.
 
-Its canonical Handoff chain is:
+### Execution flow
 
-`Inspector -> Curator -> Gatekeeper -> Coordinator -> Fixer -> Verifier`
+```text
+User / external / Inspector / other sources
+                    │
+                    ▼
+                 Curator
+                    │ accepted
+                    ▼
+                Gatekeeper
+                    │ approved
+                    ▼
+                  ready
+                    │
+               Coordinator
+                    │
+                    ▼
+             ┌──► Fixer ──► Verifier
+             │                 │
+             └── findings ─────┤
+                               │ PASS
+                               ▼
+                   Authorized integration
+```
 
-Curator acceptance and Gatekeeper approval are independent admission gates. Both must succeed before an unowned item becomes ready. Gatekeeper performs a focused technical fact check; it does not rewrite the Brief or add another coordination layer.
+Inspector is an optional source, not a mandatory entry. Coordinator mediates every stage and fix loop; Workers never coordinate directly with each other. Curator is Forge's intake role, while admission is the combination of Curator acceptance and Gatekeeper approval.
 
-The Skill defines roles and engineering judgment. The consuming repository keeps only its native issue tracker commands, Session bindings, repository/branch mappings, engineering and test rules, notification recipients, evidence paths, and actual user authorization.
+Explicit work assigned to the current Session uses a separate entry:
+
+```text
+Explicit current-Session task ──► Continue ──► authorized delivery
+```
+
+Continue does not pass through Curator or Gatekeeper. Handoff must pass both admission gates before an unowned item becomes ready.
+
+## Runtime boundaries and non-goals
+
+```text
+MAR Runtime
+Sessions / Agent network / queue / steer / Runners
+                    │
+                    ▼
+MAR Forge
+Roles / admission / ownership / delivery / verification / recovery
+                    │
+                    ▼
+Repository bindings
+Commands / branches / tests / models / evidence / authorization
+```
+
+MAR is the target runtime for this Skill; standalone non-MAR runtimes are unsupported. Forge does not provide Session primitives, product requirements, repository engineering standards, tests, credentials, or new permissions. It does not replace authoritative design or make an Issue an authorization grant.
 
 ## Requirements
 
 - A MAR-managed Workspace and MAR-hosted Runners.
-- Repository instructions that bind the generic roles and Work Item semantics to the project.
+- Repository instructions that bind the reusable roles and Work Item semantics to the project.
 
-MAR is the primary user of this Skill. Standalone non-MAR runtimes are not supported. Forge does not replace product design, engineering standards, tests, or user authorization.
+### Host bindings
+
+| Binding      | Repository-owned facts                                                   |
+| ------------ | ------------------------------------------------------------------------ |
+| Work Items   | Tracker, repository, commands, labels, and native state mapping          |
+| Sessions     | Role identities, Runner models/effort, and queue/control semantics       |
+| Repositories | Remotes, branches, dependency order, and pointer/content relationships   |
+| Execution    | Workspace isolation, commit mechanism, and authorized delivery point     |
+| Engineering  | Source routing, authoritative design, verification, and cleanup rules    |
+| Evidence     | Ignored report, recovery, and Inspector checkpoint locations             |
+| Decisions    | Notification recipient, authorized channel, and deduplication convention |
 
 ## Install with npx
 
@@ -35,21 +91,24 @@ The package is a root-level `SKILL.md` with focused references; no npm package, 
 
 ## Use
 
-Load `mar-forge` for `ship forge`, Inspector reviews, Curator intake, Gatekeeper admission, or Coordinator-led delivery. Start with `SKILL.md`, then load only the relevant reference:
+Load `mar-forge` for `ship forge`, Inspector reviews, Curator intake, Gatekeeper admission, or Coordinator-led delivery. Start with `SKILL.md`, then load only the references needed by the task:
 
-| Reference                 | Responsibility                                                              |
-| ------------------------- | --------------------------------------------------------------------------- |
-| `references/protocol.md`  | Entry points, Work Item state, ownership, evidence, recovery, and decisions |
-| `references/inspector.md` | Ad hoc and continuous commit review, local checkpoints, and finding quality |
-| `references/admission.md` | Curator reception and independent Gatekeeper technical admission            |
-| `references/delivery.md`  | Coordinator orchestration, Fixer/Verifier loops, integration, and cleanup   |
-| `references/templates.md` | Optional Brief, admission, dispatch, review, and decision formats           |
+| Task                       | References                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------------- |
+| Inspector only             | `inspector.md`; add `protocol.md` only for transfer/recovery                          |
+| Admission                  | `protocol.md` + `admission.md`                                                        |
+| Coordinator / `ship forge` | `protocol.md` + `delivery.md`; add admission only for admission coordination/recovery |
+| Templates                  | `templates.md` only when a corresponding record is needed                             |
 
-`ship forge` means complete authorized local delivery: admission, implementation, verification, independent review, necessary task commits, and local integration of changed repositories. It does not authorize push, deployment, release, production changes, or external replies.
+The references live under `references/`. `ship forge` means complete authorized local delivery: admission, implementation, verification, independent review, necessary task commits, and local integration of changed repositories. It does not authorize push, deployment, release, production changes, or external replies.
 
 ## Development
 
-Keep tracked content and commit messages in English except for this README's Chinese companion. Generic workflow rules belong in this Skill; repository-specific facts do not. Do not create a second local SOP that competes with these references.
+Keep tracked content and commit messages in English except for this README's Chinese companion. Reusable workflow rules belong in this Skill; repository-specific facts do not. Do not create a second local SOP that competes with these references.
+
+### Protocol versioning
+
+Forge is pre-release while `develop` is the only branch. Before stable publication, use `main` for reviewed stable releases, keep `develop` for integration, and tag protocol versions. Use semantic versioning: incompatible protocol behavior changes the major version, backward-compatible capabilities the minor version, and clarifications or corrections the patch version. A moving `develop` branch is not a stable protocol release.
 
 ## License
 

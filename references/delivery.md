@@ -18,10 +18,10 @@ Reuse still-valid evidence. A timer, role switch, commit, or advancing target br
 
 Default to one Fixer for one independently deliverable item. Split an item only when complete business modules can proceed independently with clear benefit, exclusive write scopes, dependencies, and an integrator. Never split by file, interface, or routine investigation step.
 
-- Each engineering task uses its declared worktree and task branch, including serial work; do not implement Handoff directly in a shared integration checkout. A pure in-Session documentation Continue may remain in the current Workspace when repository rules allow.
+- Handoff work uses a host-declared writable task workspace with sufficient isolation. Use a dedicated worktree when the host requires it, concurrent writes require it, or integration safety demands it; do not implement Handoff directly in a shared integration checkout. Continue uses the workspace and isolation declared by the host for that direct assignment; do not force it into a Handoff task workspace merely for role symmetry.
 - Sessions do not isolate directories. Before writes, verify absolute path, repository root, branch, and base HEAD. Use the assigned directory explicitly and report a blocker if isolation is impossible.
-- Give concurrent items separate writable checkouts, indexes, test instances, evidence, and recovery records. Sharing a repository or subsystem alone is not a reason to serialize; real resource or write conflicts are.
-- A new worktree does not automatically provide dependencies, nested submodules, ports, databases, or services. Prepare them according to host engineering rules and never reuse shared development/UAT instances for automated tests.
+- Give concurrent items separate writable task workspaces, indexes, test instances, evidence, and recovery records. Sharing a repository or subsystem alone is not a reason to serialize; real resource or write conflicts are.
+- A new task workspace does not automatically provide dependencies, nested submodules, ports, databases, or services. Prepare them according to host engineering rules and never reuse shared development/UAT instances for automated tests.
 - Preserve unknown or another owner's changes. Do not reset, clean, stash a whole checkout, or overwrite work to make a task directory convenient.
 
 Capacity considers active Runs/queues, machine resources, exclusive test resources, and the Coordinator's ability to follow through. Do not claim work that cannot actually be dispatched.
@@ -36,7 +36,7 @@ Fixer may repair a clearly understood, locally fixable defect, stale fixture, or
 
 Verifier is the independent review and verification role, not a mandatory third Session or duplicate PASS. A fresh Verifier reviews substantive task commits; the same Verifier is reused for subsequent fix loops. A separate bounded validation Worker is justified only by a distinct platform/resource capability and explicit authorization; Verifier still owns the single independent conclusion.
 
-Workers use the host-declared model and reasoning effort. Check actual runtime configuration, not just a title or prompt. A model change preserves the Claim, worktree, commits, changes, and valid evidence; stop the precise old writer before a replacement resumes the unfinished stage.
+Workers use the host-declared model and reasoning effort. Check actual runtime configuration, not just a title or prompt. A model change preserves the Claim, task workspace, commits, changes, and valid evidence; stop the precise old writer before a replacement resumes the unfinished stage.
 
 ## Dispatch and directory ownership
 
@@ -60,7 +60,7 @@ Where the host uses a one-time closing self-check after the first Fixer Run, que
 
 Verifier checks acceptance, source and design boundaries, regression quality, and evidence against the exact candidate. It writes a new per-round report without overwriting earlier candidates.
 
-- PASS binds repository, base/HEAD, Brief version, and actual verification scope. CI green, no findings, or insufficient evidence alone is not PASS.
+- PASS binds repository, base/HEAD, Brief revision, and actual verification scope. CI green, no findings, or insufficient evidence alone is not PASS.
 - Findings have stable IDs, severity, path/behavior, evidence, impact, and blocking status. Preferences do not create endless repair rounds.
 - Blocking Findings return once to the original Fixer, which repairs, retests, commits, and returns a new candidate. The original Verifier rechecks each Finding and affected behavior. Do not create a new implementation Session for a routine repair.
 - New content requires a corresponding new conclusion. Target-branch movement alone does not invalidate an existing candidate review; changed Briefs, conflict resolutions, or behavior interactions require scoped revalidation.
@@ -92,13 +92,13 @@ Pause only the affected item when unresolved compatibility/behavior, data/permis
 
 A valid decision is written back with author, time, candidate/scope, and limitations. Resume the original stage after rechecking current content and remaining gates; do not restart or claim again. Acceptance of residual risk never replaces required verification.
 
-## Worktree cleanup
+## Task workspace cleanup
 
 Clean task-specific checkouts only after the agreed delivery and evidence preservation are complete. Pending integration, decision, validation, or recovery is not complete.
 
 1. Read back delivered target SHAs and ensure every task commit and required artifact is recoverable. Confirm associated Runs/queues, tests, and directory users are finished.
-2. Resolve registered worktrees and exact task paths. Inspect tracked, untracked, ignored, and nested-repository content. Preserve unknown changes, undelivered commits, user files, and active users.
-3. Remove nested task worktrees/submodules in dependency order, then unregister only the exact task worktree and remove its empty container. Do not delete shared checkouts, object databases, branches, or Sessions.
+2. Resolve host-declared task workspaces, registered worktrees, and exact task paths. Inspect tracked, untracked, ignored, and nested-repository content. Preserve unknown changes, undelivered commits, user files, and active users.
+3. When the host uses worktrees, remove nested task worktrees/submodules in dependency order, then unregister only the exact task worktree and remove its empty container. Otherwise apply the host's equivalent task-workspace cleanup. Do not delete shared checkouts, object databases, branches, or Sessions.
 4. A forced removal is never a response to dirty/unknown content. If a host Git limitation requires it for an exact clean nested-submodule case, first prove the sole reason, clean deinitialization, no saved content/activity/locks, recoverability, and no shared object borrowing; otherwise preserve and report the blocker.
 5. Read back registrations and paths. Partial cleanup is reported as partial, not success.
 
