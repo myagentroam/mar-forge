@@ -6,10 +6,10 @@ This reference owns reusable Work Item and ownership semantics. The host reposit
 
 Use the host's single Work Item system for Handoff, cross-Session recovery, multi-party work, deferred decisions, follow-up verification, or explicit tracking. A small task that can finish in the current Session does not need an item unless one already exists or tracking is requested. A plan, Goal, schedule, or local report is not a second queue.
 
-Choose the execution entry from the user's instruction:
+Forge's autonomous delivery entry is Handoff. Choose behavior from the user's instruction:
 
 - **Handoff** transfers an executable item to the shared queue. Curator admission and Gatekeeper approval are both required before an unowned item becomes ready. The authorized Coordinator then claims and delivers it without asking for the same implementation permission again.
-- **Continue** keeps implementation in the explicitly assigned current Session. If tracking is needed, create or update the Brief and claim the item directly; do not pass through a transient ready state or create a Fixer solely for role symmetry. Continue does not inherit broader Handoff, commit, integration, or external-side-effect permission.
+- Explicitly assigned current-Session work remains Continue under the host repository's normal development rules and outside Forge Handoff. Do not apply Forge admission, role delegation, or Handoff state to that direct work.
 - `ship forge` requests complete authorized local Handoff delivery: admission, implementation, verification, independent review, necessary task commits, and local integration of every changed repository. It excludes push, deployment, release, and external replies.
 
 A request to transfer findings or work to Curator means ordinary Handoff unless the user explicitly limits it to filing, investigation, or paused work. Do not invent a "not ready" restriction. Urgency changes scheduling, never the two admission gates or verification requirements.
@@ -33,14 +33,14 @@ Coordination within the existing item and user mandate is binding workflow guida
 
 The host maps these semantics to native fields. Typical tracker states are:
 
-| Semantic state              | Meaning                                                                                                                           |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| Open, unadmitted            | Facts are saved but clarification, evidence, a dependency, or admission remains. Do not execute from the queue.                   |
-| Open, needs-decision        | A human behavior, scope, architecture, authorization, or integration decision is required. Preserve any owner and recovery point. |
-| Open, ready                 | Curator accepted and Gatekeeper approved the item; it is unowned and executable within the recorded mandate.                      |
-| Open, in-progress           | A valid owner has claimed it. Remove ready and preserve the actual execution stage.                                               |
-| Open, awaiting verification | Implementation exists but required validation or acceptance remains. Do not requeue implementation automatically.                 |
-| Closed                      | Delivered and verified at the agreed point, or closed with a documented duplicate/rejected reason.                                |
+| Semantic state              | Meaning                                                                                                                                     |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Open, unadmitted            | Facts are saved but clarification, evidence, a dependency, or admission remains. Do not execute from the queue.                             |
+| Open, needs-decision        | Human attention is required for a decision or a blocker that persists after bounded autonomous recovery. Preserve owner and recovery point. |
+| Open, ready                 | Curator accepted and Gatekeeper approved the item; it is unowned and executable within the recorded mandate.                                |
+| Open, in-progress           | A valid owner has claimed it. Remove ready and preserve the actual execution stage.                                                         |
+| Open, awaiting verification | Implementation exists but required validation or acceptance remains. Do not requeue implementation automatically.                           |
+| Closed                      | Delivered and verified at the agreed point, or closed with a documented duplicate/rejected reason.                                          |
 
 Workflow states are mutually exclusive. Open/Closed is the item lifecycle, not proof that a Run stopped or delivery completed. Native labels, comments, or a dedicated admission record may represent Curator acceptance and Gatekeeper approval; do not create duplicate parallel state systems.
 
@@ -72,13 +72,13 @@ A **Brief revision** is a native item revision, reliable update sequence, or exp
 - Meaningful Claim/ownership changes, admission decisions, human decisions, and final delivery outcomes remain traceable. Do not add comments for tool calls, queue mechanics, or repeated progress without new information.
 - Verifier PASS binds the exact candidate, Brief revision, and actual evidence. Insufficient evidence is not PASS. A final outcome summarizes delivered commits, acceptance, verification, and real remaining limitations, not every Fixer/Verifier round.
 
-## Decisions and notifications
+## Human attention and notifications
 
-First exhaust bounded repair, internal coordination, and recovery within existing authorization. Use needs-decision only when a person must choose behavior, scope, architecture, resources, permission, or residual risk. Environment failures remain blockers, not disguised product decisions.
+First exhaust bounded repair, internal coordination, and recovery within existing authorization. Use needs-decision as the single human-attention state when a person must choose behavior, scope, architecture, resources, permission, or residual risk, or when a technical, environment, or verification blocker persists after those autonomous attempts. Do not escalate the first recoverable failure or create a parallel blocked/needs-attention state.
 
 Record the precise question, impact, feasible options, recommendation, owner, and recovery point before using the host-authorized notification channel. The Curator handles an unowned item; the current owner handles a claimed item. Deduplicate by item and substantive decision version. Notification acceptance is neither delivery nor approval.
 
-Write a valid decision back with its author, time, scope/candidate, and limitations. Resume the original stage only after all remaining gates are satisfied. Silence, a third-party label, or a request for more information is not approval.
+Write the human decision or unblocking result back with its author, time, scope/candidate, and limitations. Resume the original stage only after all remaining gates are satisfied. Silence, a third-party label, or a request for more information is not approval.
 
 ## Confidentiality and external sources
 

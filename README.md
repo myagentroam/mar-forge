@@ -1,6 +1,6 @@
 # MAR Forge
 
-Agent-first inspection, admission, coordinated delivery, verification, and recovery for MAR-managed engineering work.
+Agent-first autonomous Handoff, admission, coordinated delivery, verification, and recovery for MAR-managed engineering work.
 
 **Forge autonomy through automation, minimizing human attention while preserving human judgment.**
 
@@ -43,13 +43,13 @@ User / external / Inspector / other sources
 
 Inspector is an optional source, not a mandatory entry. Coordinator mediates every stage and fix loop; Workers never coordinate directly with each other. Curator is Forge's intake role, while admission is the combination of Curator acceptance and Gatekeeper approval.
 
-Explicit work assigned to the current Session uses a separate entry:
+Explicit work assigned to the current Session remains outside Forge Handoff:
 
 ```text
 Explicit current-Session task ──► Continue ──► authorized delivery
 ```
 
-Continue does not pass through Curator or Gatekeeper. Handoff must pass both admission gates before an unowned item becomes ready.
+Explicit current-Session work remains Continue under the host repository's normal development rules and outside Forge Handoff. Handoff must pass both admission gates before an unowned item becomes ready.
 
 ## Runtime boundaries and non-goals
 
@@ -75,10 +75,10 @@ MAR is the target runtime for this Skill; standalone non-MAR runtimes are unsupp
 
 ### Host bindings
 
-| Binding      | Repository-owned facts                                                   |
+| Binding      | Host-provided bindings                                                   |
 | ------------ | ------------------------------------------------------------------------ |
 | Eligibility  | Natural-language declaration of Forge use in root instructions           |
-| Work Items   | Tracker, repository, commands, labels, and native state mapping          |
+| Work Items   | Tracker, commands, state mapping, and Brief revision source              |
 | Sessions     | Role identities, Runner models/effort, and queue/control semantics       |
 | Repositories | Remotes, branches, dependency order, and pointer/content relationships   |
 | Execution    | Workspace isolation, commit mechanism, and authorized delivery point     |

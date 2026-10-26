@@ -27,7 +27,7 @@ Do not include deduplication logs, Session/Run/queue IDs, worktree paths, dispat
 Curator acceptance:
 
 ```text
-Forge admission — Curator accepted. Brief revision <logical revision>; Brief and execution entry checked; submitted for independent Gatekeeper fact check. Not ready yet.
+Forge admission — Curator accepted. Brief revision <logical revision>; Brief and Handoff scope checked; submitted for independent Gatekeeper fact check. Not ready yet.
 ```
 
 Gatekeeper decision:
@@ -124,10 +124,10 @@ Worker final response (not a Session message):
 <PASS bound to exact candidate and evidence, repair required, or blocker; directory state>
 ```
 
-## Human decision record
+## Human attention or decision record
 
 ```text
-Decision needed: <precise behavior/scope/architecture/authorization question>.
+Attention needed: <human-owned decision or blocker persisting after bounded autonomous recovery>.
 Stage and candidate: <current stage and exact candidate, if any>.
 Impact: <why execution cannot safely continue>.
 Options: <bounded feasible choices and consequences>.
@@ -135,4 +135,4 @@ Recommendation: <one recommendation with basis>.
 Owner/recovery: <preserved owner and resume point>.
 ```
 
-Record the resulting author, time, choice, scope/candidate, and limitations. Notification receipts belong in minimal private recovery records, not the user-facing Brief.
+Record the resulting author, time, choice or resolution, scope/candidate, and limitations. Notification receipts belong in minimal private recovery records, not the user-facing Brief.

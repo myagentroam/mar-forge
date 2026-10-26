@@ -1,6 +1,6 @@
 ---
 name: mar-forge
-description: Opt-in MAR Forge engineering workflow protocol. Load only when the user explicitly invokes Forge (for example "ship forge"), the current repository or Workspace explicitly declares MAR Forge enabled, or an existing Forge workflow/role is being resumed. Do not load for ordinary code review, implementation, bug fixing, testing, planning, or delivery in projects that do not explicitly use MAR Forge.
+description: Opt-in MAR Forge autonomous Handoff protocol. Load only when the user explicitly invokes Forge (for example "ship forge"), the current repository or Workspace explicitly declares MAR Forge enabled, or an existing Forge workflow/role is being resumed. Do not load for ordinary code review, implementation, bug fixing, testing, planning, or delivery in projects that do not explicitly use MAR Forge.
 ---
 
 # MAR Forge
@@ -13,7 +13,7 @@ MAR Forge is opt-in, not MAR's default development behavior. Use this Skill only
 - The current repository or Workspace explicitly states in natural language that it uses MAR Forge for the relevant workflow.
 - The current task belongs to an existing Forge workflow, Forge-tracked Work Item, recovery state, or Forge role Session, including an explicitly configured Forge Inspector Session.
 
-Otherwise, stop using this Skill and do not load its references. Do not apply Forge roles, admission gates, Work Item semantics, Continue/Handoff rules, or delivery rules; follow the repository's ordinary instructions. No negative declaration is required—absence of opt-in already means Forge is not applicable.
+Otherwise, stop using this Skill and do not load its references. Do not apply Forge roles, admission gates, Work Item semantics, Handoff rules, or delivery rules; follow the repository's ordinary instructions. No negative declaration is required—absence of opt-in already means Forge is not applicable.
 
 **Forge autonomy through automation, minimizing human attention while preserving human judgment.**
 
@@ -22,19 +22,18 @@ MAR Forge is a reusable workflow Skill for MAR-managed Workspaces. It defines en
 ## Hard invariants
 
 - Forge is opt-in; Skill availability or accidental loading does not enable Forge for a repository or task.
-- Continue does not require Handoff admission.
+- Forge governs autonomous Handoff only; explicitly assigned current-Session work remains outside that protocol.
 - Handoff ready means Curator accepted **and** Gatekeeper approved.
 - Only Coordinator claims and orchestrates Handoff work.
 - Workers never mutate Work Item state or coordinate with each other.
 - Verifier PASS is bound to an exact candidate and evidence.
 - Forge never expands user authorization; push, deploy, release, and external replies require explicit authorization.
 
-## Operating model
+## Scope
 
-Forge has two execution entries:
+Forge governs autonomous Handoff delivery. Explicit work assigned to the current Session remains Continue under the host repository's normal development rules and outside Forge Handoff; do not apply admission or role delegation merely for symmetry.
 
-- **Continue** is explicit work assigned to the current Session. It does not require Curator or Gatekeeper admission and must not be routed through Handoff merely for role symmetry.
-- **Handoff** transfers work into the autonomous shared queue. Curator acceptance and Gatekeeper approval are mandatory before an unowned item becomes ready.
+Handoff transfers work into the autonomous shared queue. Curator acceptance and Gatekeeper approval are mandatory before an unowned item becomes ready.
 
 The admitted Handoff role chain is `Curator -> Gatekeeper -> Coordinator -> Fixer -> Verifier`, followed by authorized integration. Inspector and other sources feed Curator; Inspector is not a mandatory entry. Coordinator mediates every Fixer/Verifier loop.
 

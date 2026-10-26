@@ -1,6 +1,6 @@
 # Delivery: Coordinator, Fixer, and Verifier
 
-This reference governs Handoff and explicitly delegated coordination. It is not a mandatory gateway for a small Continue task. The Coordinator drives admitted work to its authorized delivery point; scheduling, a terminal Run, or a candidate commit is not completion.
+This reference governs Handoff and explicitly delegated coordination. Direct current-Session work is outside this reference. The Coordinator drives admitted work to its authorized delivery point; scheduling, a terminal Run, or a candidate commit is not completion.
 
 ## Coordinator work loop
 
@@ -18,7 +18,7 @@ Reuse still-valid evidence. A timer, role switch, commit, or advancing target br
 
 Default to one Fixer for one independently deliverable item. Split an item only when complete business modules can proceed independently with clear benefit, exclusive write scopes, dependencies, and an integrator. Never split by file, interface, or routine investigation step.
 
-- Handoff work uses a host-declared writable task workspace with sufficient isolation. Use a dedicated worktree when the host requires it, concurrent writes require it, or integration safety demands it; do not implement Handoff directly in a shared integration checkout. Continue uses the workspace and isolation declared by the host for that direct assignment; do not force it into a Handoff task workspace merely for role symmetry.
+- Handoff work uses a host-declared writable task workspace with sufficient isolation. Use a dedicated worktree when the host requires it, concurrent writes require it, or integration safety demands it; do not implement Handoff directly in a shared integration checkout.
 - Sessions do not isolate directories. Before writes, verify absolute path, repository root, branch, and base HEAD. Use the assigned directory explicitly and report a blocker if isolation is impossible.
 - Give concurrent items separate writable task workspaces, indexes, test instances, evidence, and recovery records. Sharing a repository or subsystem alone is not a reason to serialize; real resource or write conflicts are.
 - A new task workspace does not automatically provide dependencies, nested submodules, ports, databases, or services. Prepare them according to host engineering rules and never reuse shared development/UAT instances for automated tests.
@@ -64,7 +64,7 @@ Verifier checks acceptance, source and design boundaries, regression quality, an
 - Findings have stable IDs, severity, path/behavior, evidence, impact, and blocking status. Preferences do not create endless repair rounds.
 - Blocking Findings return once to the original Fixer, which repairs, retests, commits, and returns a new candidate. The original Verifier rechecks each Finding and affected behavior. Do not create a new implementation Session for a routine repair.
 - New content requires a corresponding new conclusion. Target-branch movement alone does not invalidate an existing candidate review; changed Briefs, conflict resolutions, or behavior interactions require scoped revalidation.
-- If the same blocking Finding remains unresolved after two complete repair + verification + re-review cycles, stop that loop and escalate with precise evidence. Real progress is not stopped by an arbitrary total round count, and renaming a Finding does not reset the count. Network/credential failures are blockers, not completed repair rounds.
+- If the same blocking Finding remains unresolved after two complete repair + verification + re-review cycles, stop that unchanged loop. Coordinator preserves the exact candidate and failure evidence, then organizes technical reassessment of the root cause and implementation direction. A materially different, evidence-backed direction may start a new bounded attempt. If no viable direction remains or the blocker persists after bounded autonomous recovery, record needs-decision with the technical summary and recovery point; do not create a separate blocked state. Real progress is not stopped by an arbitrary total round count, and renaming a Finding does not reset the count. Network/credential failures require the same bounded recovery before escalation and are not completed repair rounds.
 
 Immediately escalate contradictory requirements, scope violations, or product/architecture tradeoffs. Ordinary repairable Findings continue automatically without human confirmation.
 
@@ -88,9 +88,9 @@ At the authorized local delivery point, read back target reachability and actual
 
 ## Decisions and blockers
 
-Pause only the affected item when unresolved compatibility/behavior, data/permission safety, cross-repository consistency, critical verification, or an actual product/architecture choice remains. Record needs-decision, owner, candidate, recovery point, options, and recommendation, then follow the host's authorized notification rule. Do not turn an ordinary environment failure into a human risk decision or stop unrelated Coordinator work.
+For unresolved compatibility/behavior, data/permission safety, cross-repository consistency, critical verification, or environment failures, first diagnose and attempt bounded autonomous recovery within existing authorization. If the blocker persists, record needs-decision with precise evidence, owner, candidate, recovery point, feasible next actions, and recommendation, then follow the host's authorized notification rule. An actual human behavior, scope, architecture, resource, permission, or residual-risk choice uses the same state without waiting for repair attempts. Pause only the affected item; do not stop unrelated Coordinator work or create a separate blocked/needs-attention state.
 
-A valid decision is written back with author, time, candidate/scope, and limitations. Resume the original stage after rechecking current content and remaining gates; do not restart or claim again. Acceptance of residual risk never replaces required verification.
+Write the human decision or unblocking result back with author, time, candidate/scope, and limitations. Resume the original stage after rechecking current content and remaining gates; do not restart or claim again. Acceptance of residual risk never replaces required verification.
 
 ## Task workspace cleanup
 

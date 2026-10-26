@@ -1,6 +1,6 @@
 # MAR Forge
 
-面向 MAR 托管工程工作的 Agent-first 审查、准入、协同交付、验证与恢复 Skill。
+面向 MAR 托管工程工作的 Agent-first 自治 Handoff、准入、协同交付、验证与恢复 Skill。
 
 **Forge autonomy through automation, minimizing human attention while preserving human judgment.**
 
@@ -43,13 +43,13 @@ Forge 采用显式 opt-in，不是 MAR 的默认开发行为。只有用户显�
 
 Inspector 是可选来源，不是必经入口。Coordinator 协调每个阶段和 Fix Loop，Worker 之间不直接协调。Curator 是 Forge 的接收角色，admission 由 Curator 接收与 Gatekeeper 批准两道门禁组成。
 
-明确交给当前 Session 的工作使用独立入口：
+明确交给当前 Session 的工作不进入 Forge Handoff：
 
 ```text
 明确的当前 Session 任务 ──► Continue ──► 授权内交付
 ```
 
-Continue 不经过 Curator 或 Gatekeeper；Handoff 必须通过两道准入门禁，无 owner 的工作项才能进入 ready。
+明确的当前 Session 工作仍按宿主仓库普通开发规则执行 Continue，不进入 Forge Handoff。Handoff 必须通过两道准入门禁，无 owner 的工作项才能进入 ready。
 
 ## Runtime 边界与非目标
 
@@ -75,10 +75,10 @@ MAR 是本 Skill 的目标 Runtime，不支持独立非 MAR Runtime。Forge 不�
 
 ### 宿主绑定
 
-| 绑定      | 仓库维护的事实                                 |
+| 绑定      | 宿主提供的绑定                                 |
 | --------- | ---------------------------------------------- |
 | 适用性    | 根指令中使用 Forge 的自然语言声明              |
-| Work Item | 跟踪器、仓库、命令、labels 与原生状态映射      |
+| Work Item | 跟踪器、命令、状态映射与 Brief revision 来源   |
 | Session   | 角色身份、Runner 模型/effort 与 queue/控制语义 |
 | 仓库      | 远端、分支、依赖顺序及指针/内容关系            |
 | 执行      | Workspace 隔离、commit 机制与授权交付点        |
