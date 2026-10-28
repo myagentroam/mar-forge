@@ -44,7 +44,7 @@ Use [templates.md](templates.md) for the initial Fixer/Verifier dispatch. Supply
 
 Handoff Workers are read-only on the Work Item. They save stable evidence and finish their Session turn with the result; they do not edit Briefs, labels, assignees, or comments, do not integrate, and do not message or wait for each other or Coordinator. Coordinator alone dispatches, waits across Sessions, and writes back verified outcomes.
 
-Normal stage dispatches use non-interrupting queue semantics after checking the recipient, prior Run, queue, pause, and deduplication ID. Interrupt only a precise target when existing control authorization and an actual coordination need justify it. Acceptance, queueing, and terminal state are not business completion.
+Apply the [protocol's delivery choice](protocol.md#roles-and-authority) after checking the recipient, prior Run, queue, pause, and deduplication ID. Prefer `--steer` for a ready stage dispatch or an update needed during current work; do not use it to bypass unfinished prior obligations or directory release. Reserve `--queue` for deliberately deferred follow-ups, including the required second Fixer turn below. Acceptance, queueing, and terminal state are not business completion.
 
 Directory use follows `Fixer -> Verifier -> Fixer` serially by default; independent judgment does not require a second checkout. Ownership of the Work Item Claim does not move with directory use.
 

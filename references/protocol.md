@@ -31,6 +31,8 @@ Each role uses the existing host-declared Session and native identity. Inspect a
 
 Coordination within the existing item and user mandate is binding workflow guidance for Workers. It cannot change confirmed behavior, make a human decision, or override project and safety boundaries.
 
+For authorized cross-Session coordination, prefer `--steer` for information the recipient should handle during current work: handoffs, blockers, decisions, corrections, or results it is waiting for. Use `--queue` only for deliberately deferred work that should follow the current execution; active work or a Goal can otherwise delay coordination. Node decides actual delivery, and steer may switch execution. Respect explicit pauses, ownership, and role messaging boundaries; this preference does not authorize new messages or takeovers. Omit routine progress chatter.
+
 ## Native state mapping
 
 The host maps these semantics to native fields. Typical tracker states are:
