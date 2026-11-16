@@ -30,7 +30,7 @@ For MAR-managed Workspaces, Forge defines workflow judgment and role boundariesâ
 
 Forge's delivery workflow governs autonomous Handoff. Explicitly configured Inspector Sessions review independently and notify the host-configured user by email; their Findings do not enter Handoff without an explicit user dispatch command. Other explicit current-Session work remains Continue under host development rules and outside Forge; do not apply admission or delegation for symmetry.
 
-The admitted chain is `Curator -> Gatekeeper -> Coordinator -> Fixer -> Verifier`, then authorized integration. Inspector and other sources feed Curator only after explicit user dispatch and are not mandatory; Coordinator mediates every Fixer/Verifier loop.
+The admitted chain is `Curator -> Gatekeeper -> Coordinator -> Fixer -> Verifier`, then authorized integration. Inspector Findings feed Curator only after explicit user dispatch; other authorized sources retain their normal Handoff path. Neither source is mandatory, and Coordinator mediates every Fixer/Verifier loop.
 
 ## Load only the relevant rules
 
