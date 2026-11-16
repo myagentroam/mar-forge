@@ -1,6 +1,6 @@
 # Inspector: evidence-driven code review
 
-Use this reference for ad hoc code, architecture, or module reviews and continuous commit review. Inspector produces evidence and conclusions; it does not automatically fix, commit, notify, or deploy. Continuous commit review automatically transfers confirmed Findings to Curator for ordinary Handoff; independent ad hoc review does not transfer unless the user explicitly requests it.
+Use this reference for ad hoc code, architecture, or module reviews and continuous commit review. Inspector produces evidence and conclusions; it does not automatically fix, commit, Handoff, or deploy. After each round with confirmed Findings, Inspector sends one consolidated email to the host-configured user. No Finding enters Curator or the delivery pipeline until the user explicitly commands dispatch.
 
 ## Scope and evidence discipline
 
@@ -26,7 +26,7 @@ Use a distinguishable review ID such as `20261025T103000Z-eb06ac33` or `20261025
 
 Update a checkpoint at the start, after a substantive phase or external side effect, on interruption, and at completion—not after every read or search. Commit and topic checkpoints are independent. Allow one active review per mode per checkout; inspect an existing owner before resuming or replacing an interrupted record. Use separate checkouts for genuinely parallel reviews.
 
-Checkpoints are recovery aids, not tracked indexes, design facts, Work Items, or completion proof. An actual delivery receipt with `delivery=ACCEPTED`, `delivery=STARTED`, or `delivery=QUEUED` means the input was accepted for processing, not that Curator accepted the Finding or implementation completed. Once Curator accepts a finding into a Work Item, that item owns subsequent state. Never record secrets, hidden reasoning, full conversations, or irrelevant personal data. Historical authorization in a checkpoint does not revive expired permission.
+Checkpoints are recovery aids, not tracked indexes, design facts, Work Items, or completion proof. An accepted email notification means the host accepted it for delivery, not that the user read it or authorized dispatch. A Handoff receipt with `delivery=ACCEPTED`, `delivery=STARTED`, or `delivery=QUEUED` exists only after explicit user dispatch; none proves Curator admission or implementation. Once Curator accepts a finding into a Work Item, that item owns subsequent state. Never record secrets, hidden reasoning, full conversations, or irrelevant personal data. Historical authorization in a checkpoint does not revive expired permission.
 
 Keep only fields needed for recovery and omit empty sections:
 
@@ -48,7 +48,8 @@ run_dir: .forge/inspector/runs/<review-id>/
 scope: <actual scope and exclusions>
 covered: <behaviors, modules, and evidence checked>
 findings: <IDs, classifications, report links, and any Work Item URLs>
-handoff: <none, or per-Finding pending or actual delivery receipt, with clientMessageId>
+notification: <none, pending, or the actual user-email receipt and covered Finding IDs>
+handoff: <omit unless the user explicitly dispatches; then record pending or actual delivery>
 validation: <actual results and explicit gaps>
 external_effects: <actual side effects and receipts; omit if none>
 remaining: <unfinished review or validation>
@@ -62,7 +63,7 @@ next_action: <single next action on resume>
 3. **Validate concrete candidates.** Start with static inspection of code, design, existing tests, and recorded evidence; follow trigger order, actual reachability, impact, and safeguards. Do not execute tests merely because behavior looks suspicious or to explore possibilities. Only after a concrete candidate emerges, run the smallest focused test or diagnostic when static evidence is insufficient and execution can confirm or refute its trigger, impact, or classification. A statically proven conclusion needs no confirming test run. Classify any observed failure as regression, stale expectation, pre-existing behavior, or environment before assigning blame.
 4. **Classify conclusions.** Separate confirmed defects, explicit verification gaps, unconfirmed candidates, and rejected candidates. Unconfirmed candidates are not formal Findings; if retained, name the missing evidence and decisive experiment. Architecture findings need the same evidence standard.
 5. **Report and dispose only as authorized.** Order formal Findings by impact. Include path/location, trigger sequence, impact, evidence, and minimal repair direction. A verification gap names the missing behavior guarantee and smallest useful test. Exclude preferences, speculative risks, and combinatorial test matrices.
-6. **Finish the round.** Record actual coverage, conclusions, commands/results, exclusions, and next action. Report once after the entire requested round, independent review, and required Handoff are complete; do not give per-commit or per-candidate progress reports. Interrupt early only for a genuine blocker or a user decision. If no confirmed issue exists, say so and list validation limits without running exploratory tests to make the review appear more verified. Re-review changed content against its new SHA while preserving old reports and rechecking only invalidated evidence.
+6. **Finish the round.** Record actual coverage, conclusions, commands/results, exclusions, and next action. Report once after the entire requested round, independent review, and required user-email notification are complete; do not give per-commit or per-candidate progress reports. Interrupt early only for a genuine blocker or a user decision. If no confirmed issue exists, say so and list validation limits without running exploratory tests to make the review appear more verified. Re-review changed content against its new SHA while preserving old reports and rechecking only invalidated evidence.
 
 `review fix loop` addresses current Findings when repair is authorized, then rechecks affected behavior. Static-first limits exploratory review; it does not waive post-fix verification required by host engineering rules. Without new code, evidence, or missed scope, do not mechanically repeat a full review.
 
@@ -72,13 +73,13 @@ Use `cursor` for the last completed full SHA on the named branch and `pending` f
 
 Advance by first-parent review units unless the user specifies otherwise. A normal commit is compared with its parent. A merge is one unit: inspect the full introduced diff and conflict handling relative to the first parent, reusing still-valid reviews of merged commits where appropriate. A batched report lists every SHA.
 
-1. Resume non-empty `pending` before selecting another commit. Reconcile any `handoff: pending` Finding before selecting a new unit; do not resend a Finding whose delivery was already accepted (`ACCEPTED`, `STARTED`, or `QUEUED`, including an existing queued record). Otherwise select the next unit after `cursor` and record its base/HEAD and run directory.
+1. Resume non-empty `pending` before selecting another commit. Reconcile any `notification: pending` round before selecting a new unit; do not resend a notification whose acceptance was already recorded. Preserve historical Handoff receipts, but never resume or send Handoff without a new explicit user dispatch command. Otherwise select the next unit after `cursor` and record its base/HEAD and run directory.
 2. Inspect actual diff, design, tests, and direct effects. For a Gitlink change, resolve old/new submodule SHAs and review their diff; a missing object or unclear relationship is a blocker, not an empty change.
-3. Give each confirmed Finding a stable local ID and transfer its evidence to Curator for normal reception, deduplication, and the two admission gates. Include repository, base/HEAD, report reference, and enough context to reproduce or assess it. Do not transfer hypotheses or verification-only gaps as defects. Inspector must not create or edit Work Items, choose `ready`, dispatch Workers, or fix the Finding.
-4. Record `handoff: pending` with the stable Finding ID and `clientMessageId` before sending, then save the actual send/delivery receipt. `delivery=ACCEPTED` (priority context accepted), `delivery=STARTED` (startup begun), and `delivery=QUEUED` (input queued) each replace pending as accepted delivery; none proves model processing or Curator admission. An unknown send result remains pending. On recovery, use the saved `clientMessageId` to reconcile against the recipient's actual received-input or queue records before considering a retry. If those records establish accepted delivery, save that evidence and do not resend; if the outcome is still unknown, retain pending rather than blindly retrying. Review completion and Handoff delivery are separate: the cursor may advance after the review and pending or actual receipt are recorded, but the next round reconciles pending delivery before new work.
+3. Give each confirmed Finding a stable local ID and include repository, base/HEAD, report reference, trigger, impact, and minimal repair direction in the round report. After the whole round, send one consolidated email to the host-configured user covering all confirmed Findings; do not email unconfirmed candidates or verification-only gaps, and do not send an empty email when there are none. Do not transfer any Finding to Curator automatically.
+4. Record `notification: pending` with the run and covered Finding IDs before sending, then save the actual email acceptance receipt. An unknown result remains pending; on recovery, reconcile the original send and receipt before considering a retry. Review completion and notification are separate: the cursor may advance after the review and pending or actual receipt are recorded, but the next round reconciles pending notification before new work.
 5. Only after the scope, candidates, Findings, verification gaps, and report have conclusions may `cursor` advance to HEAD and `pending` clear. Review completion does not mean its Findings were fixed. Preserve `pending` on interruption or insufficient evidence.
 
-New branch commits wait for later rounds. This automatic Curator handoff applies to both scheduled continuous review and user-requested sequential advancement through the same commit cursor. After accepted delivery (`ACCEPTED`, `STARTED`, or `QUEUED`), stop tracking implementation locally; later Curator or Work Item state is not an Inspector completion condition.
+New branch commits wait for later rounds. The consolidated user email applies to both scheduled continuous review and user-requested sequential advancement through the same commit cursor. Email acceptance is not dispatch or approval. Only a later explicit user command transfers selected Findings to Curator for normal Handoff; Inspector must not create or edit Work Items, choose `ready`, dispatch Workers, or fix the Finding unless separately authorized.
 
 ## Ad hoc topic mode
 
@@ -86,7 +87,7 @@ Define falsifiable coverage rather than "look deeper." Record topic, baseline/cu
 
 Reuse confirmed conclusions and recheck only changes on resume. Do not let a topic grow into a whole-repository review without redefining scope. Mark complete only when all declared units have conclusions and `remaining` is empty; exclusions are removed from both scope and remaining. Sampling is never described as exhaustive coverage.
 
-Ad hoc findings remain report-only unless the user explicitly asks to transfer them. Do not silently apply continuous-review handoff authorization to an independent topic, even when its target is a commit.
+Ad hoc findings follow the same consolidated user-email notification and explicit-dispatch boundary. An independent topic never enters Handoff automatically, even when its target is a commit.
 
 ## Per-round report
 
@@ -113,7 +114,7 @@ Each run directory contains at least `report.md` with only relevant sections:
 
 ## Side effects and next action
 
-<Actual Curator handoff, Work Item/fix effects and one next action; omit if none>
+<Actual user-email receipt, any explicitly dispatched Handoff, and one next action; omit if none>
 ```
 
 On resume, read the fixed checkpoint, latest report, and only cited evidence needed for the next decision. Verify candidate SHA, worktree, and prior side effects. Stop when necessary validation and records are complete.

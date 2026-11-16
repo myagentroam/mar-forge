@@ -41,7 +41,7 @@ User / external / Inspector / other sources
                    Authorized integration
 ```
 
-Inspector is an optional source, not a mandatory entry. Coordinator mediates all post-admission execution and Fixer/Verifier loops; Workers never coordinate directly with each other. Curator is Forge's intake role, while admission is the combination of Curator acceptance and Gatekeeper approval.
+Inspector is an optional source, not a mandatory entry. It emails confirmed Findings to the user and transfers them to Curator only after explicit user dispatch. Coordinator mediates all post-admission execution and Fixer/Verifier loops; Workers never coordinate directly with each other. Curator is Forge's intake role, while admission is the combination of Curator acceptance and Gatekeeper approval.
 
 Explicit work assigned to the current Session remains outside Forge Handoff:
 

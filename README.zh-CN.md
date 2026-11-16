@@ -41,7 +41,7 @@ Forge 采用显式 opt-in，不是 MAR 的默认开发行为。只有用户显�
                          授权内集成
 ```
 
-Inspector 是可选来源，不是必经入口。Coordinator 协调准入后的执行与 Fixer/Verifier Loop，Worker 之间不直接协调。Curator 是 Forge 的接收角色，admission 由 Curator 接收与 Gatekeeper 批准两道门禁组成。
+Inspector 是可选来源，不是必经入口。它向用户邮件通知确认 Finding，只有用户明确派发后才转交 Curator。Coordinator 协调准入后的执行与 Fixer/Verifier Loop，Worker 之间不直接协调。Curator 是 Forge 的接收角色，admission 由 Curator 接收与 Gatekeeper 批准两道门禁组成。
 
 明确交给当前 Session 的工作不进入 Forge Handoff：
 
