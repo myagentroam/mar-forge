@@ -22,6 +22,8 @@ Curator may read relevant source, tests, authoritative design, and sanitized evi
 
 Record the observed behavior, trigger, impact, affected domain, and verifiable completion condition. Stop when the Brief is sufficient. Mark reproducibility honestly when a credible observation cannot yet be reproduced.
 
+For an already authorized Handoff, treat a request to diagnose the root cause as part of intake unless the user explicitly limits it to diagnosis, read-only work, or a pause. If the investigation resolves the recorded gap and the current design settles the expected behavior, update the canonical Brief, clear only the resolved attention reason, and continue through Curator acceptance and independent Gatekeeper review without asking the user to confirm again. If a material decision, permission, or resource gap remains, ask only for that missing input. Preserve any existing Claim and follow the protocol for a material change. A diagnosis request by itself does not authorize a new Handoff or override a pause or withdrawal.
+
 ## Brief and readiness judgment
 
 Use the host's native template and [templates.md](templates.md) as writing aids, not mandatory empty headings. Curator delivers an executable Brief rather than leaving clarification to Coordinator.
