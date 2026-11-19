@@ -8,7 +8,7 @@ There is one host-declared Handoff Coordinator. It orchestrates and integrates b
 
 1. Reconcile all open in-progress Handoff items, recorded Sessions, candidates, and directories. Distinguish active work, interrupted recovery, and missed status updates. Do not skip, repeat, or take over a valid Continue/other owner.
 2. Consume existing Verifier results, blockers, decisions, and delivery-ready candidates first. Resume the original stage rather than restarting implementation.
-3. With available capacity, select independent Open + ready items by priority and dependencies. Read each latest item, verify both admission gates and the absence of a valid Claim, then claim before writes. A missing critical fact returns to Curator; a new tradeoff follows needs-attention with reason `decision`.
+3. With available capacity, select independent Open + ready items by priority and dependencies, including on a scheduled sweep. Verify both gates against the current Brief, the absence of a valid Claim, and that the item is not paused or withdrawn. Claim before implementation writes and dispatch within the admitted scope without asking for authorization again. A `ready` label alone is not proof of admission; missing or stale gate evidence returns to admission, and a new tradeoff follows needs-attention with reason `decision`.
 4. Prepare isolated task directories and dispatch the minimum necessary Fixer and fresh Verifier work. Independent items may proceed concurrently; one item's wait or repair must not barrier unrelated items.
 5. Wait through existing Session mechanisms with bounds, read actual final results and evidence, write meaningful outcomes to the Work Item, integrate only verified candidates, and clean up after the agreed delivery point.
 

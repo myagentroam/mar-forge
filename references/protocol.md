@@ -8,7 +8,7 @@ Use the host's single Work Item system for Handoff, cross-Session recovery, mult
 
 Forge's autonomous delivery entry is Handoff. Choose behavior from the user's instruction:
 
-- **Handoff** transfers an executable item to the shared queue. Curator admission and Gatekeeper approval are both required before an unowned item becomes ready. The authorized Coordinator then claims and delivers it without asking for the same implementation permission again.
+- **Handoff** transfers an executable item to the shared queue. Curator acceptance and Gatekeeper approval record the execution mandate before an unowned item becomes ready. Valid `ready` is the standing signal for the Coordinator to claim and deliver within that mandate, including on scheduled runs. No separate confirmation, current-turn request, or per-item dispatch message is required.
 - Explicitly assigned current-Session work remains Continue under the host repository's normal development rules and outside Forge Handoff. Do not apply Forge admission, role delegation, or Handoff state to that direct work.
 - `ship forge` requests complete authorized local Handoff delivery: admission, implementation, verification, independent review, necessary task commits, and local integration of every changed repository. It excludes push, deployment, release, and external replies.
 
@@ -41,7 +41,7 @@ The host maps these semantics to native fields. Typical tracker states are:
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | Open, unadmitted            | Facts are saved but clarification, evidence, a dependency, or admission remains. Do not execute from the queue.                |
 | Open, needs-attention       | Human decision, authorization, resource/action, or a persistent blocker requires attention. Preserve owner and recovery point. |
-| Open, ready                 | Curator accepted and Gatekeeper approved the item; it is unowned and executable within the recorded mandate.                   |
+| Open, ready                 | Both gates apply to the current Brief; no valid owner or hold prevents automatic claim within the recorded mandate.            |
 | Open, in-progress           | A valid owner has claimed it. Remove ready and preserve the actual execution stage.                                            |
 | Open, awaiting verification | Implementation exists but required validation or acceptance remains. Do not requeue implementation automatically.              |
 | Closed                      | Delivered and verified at the agreed point, or closed with a documented duplicate/rejected reason.                             |

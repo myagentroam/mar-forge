@@ -296,6 +296,17 @@
         "Does not equate accepted input with Curator acceptance, Gatekeeper approval, ready, or implementation completion; Inspector neither mutates Work Items nor dispatches Workers, fixes Findings, or waits for downstream completion."
       ],
       "files": []
+    },
+    {
+      "id": 26,
+      "prompt": "An hourly Coordinator sweep finds no in-progress work and has spare capacity. Item A is Open and ready with both gates recorded for the current Brief revision, no owner, and no hold. Item B has a ready label but its approval is for an older Brief revision. Item C still has a ready label and current gate records, but the user has paused delivery. The timer contains no individual Issue numbers or fresh delivery authorization. Decide which items to claim and what actions that permits; do not perform live actions.",
+      "expected_output": "Automatically claims A and dispatches it for the admitted local delivery without asking or waiting for per-item authorization. Does not claim B or C and does not expand the local delivery mandate.",
+      "expectations": [
+        "Claims A before implementation and dispatches it without a fresh user confirmation or dispatch message.",
+        "Returns B for the missing current gate and respects C's explicit pause despite its label and gate records.",
+        "Does not treat either the timer or ready as permission to push, deploy, release, or reply externally."
+      ],
+      "files": []
     }
   ]
 }
