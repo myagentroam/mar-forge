@@ -16,7 +16,7 @@
     },
     {
       "id": 2,
-      "prompt": "In an explicitly configured Forge Inspector Session, perform an independent ad hoc review of commit 9f31c2a and its direct effects. This is read-only: check the implementation, tests, and design, and make it possible to resume after an interruption.",
+      "prompt": "In an explicitly configured Forge Inspector Session, perform an ad hoc review of commit 9f31c2a and its direct effects. This is read-only and outside Handoff: check the implementation, tests, and design, and make it possible to resume after an interruption.",
       "expected_output": "Loads inspector without protocol, binds the exact candidate, performs static-first review with recovery records, separates confirmed findings from speculation, and does not run exploratory tests, fix, or create a Work Item.",
       "files": [],
       "expectations": [
@@ -316,6 +316,18 @@
         "Distinguishes the user instruction from the relay's claim, sender identity, and delivery receipt.",
         "Deduplicates A and processes B without a second user confirmation; neither Curator nor Inspector sets ready or dispatches Workers.",
         "Does not let uncertainty about C block A or B, and asks only for missing authorization if C is to be handed off."
+      ],
+      "files": []
+    },
+    {
+      "id": 28,
+      "prompt": "The fixed Inspector is reviewing a commit range with a possible cross-module lifecycle bug. A root-cause trace spans ownership changes and asynchronous failure paths. Subagent tooling is available, and the review may exceed this run's remaining time. Explain how to review and conclude the round without making live changes.",
+      "expected_output": "Personally traces and rechecks the relevant paths against source, design, and tests in the current Inspector Session. Does not delegate any review or investigation. If interrupted, preserves the unfinished scope and resumes it in the same Session without advancing the cursor past incomplete work.",
+      "expectations": [
+        "Does not create or use a subagent or request a separate review Session, even for a second opinion or a difficult subproblem.",
+        "Checks actual call order, owner transitions, and failure paths, using a focused diagnostic only if static evidence cannot resolve a concrete candidate.",
+        "On interruption, leaves unfinished work pending, does not advance the cursor past it, and resumes in the same Inspector Session.",
+        "Leaves Gatekeeper and Verifier in place for any later authorized Handoff."
       ],
       "files": []
     }
